@@ -1,5 +1,5 @@
 import electron from 'electron'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Toolbar from '../../components/Toolbar'
 import TabNav from '../../components/TabNav'
@@ -7,7 +7,8 @@ import WavePanel from '../../components/WavePanel'
 import CommandLine from '../../components/CommandLine'
 import TerminalToolbar from '../../components/TerminalToolbar'
 import FolderViewer from '../../components/FolderViewer'
-// import XTerm from '../../components/XTerm'
+import { XTerm } from 'xterm-for-react'
+import { FitAddon } from 'xterm-addon-fit'
 
 const ipcRenderer = electron.ipcRenderer || false
 
@@ -24,6 +25,9 @@ function Tab({}) {
   const [packageJSON, setPackageJSON] = useState('')
   const [ls, setls] = useState('')
   const [output, setOutput] = useState('')
+
+  const xtermRef = useRef(null)
+  const fitAddon = new FitAddon()
 
   useEffect(() => {
     setTabs(ipcRenderer.sendSync('get-tabs'))
@@ -132,7 +136,7 @@ function Tab({}) {
             }}
           />
         )}
-        {/* <XTerm
+        <XTerm
           ref={xtermRef}
           options={{
             convertEol: true,
@@ -141,7 +145,7 @@ function Tab({}) {
             },
           }}
           addons={[fitAddon]}
-        /> */}
+        />
       </div>
     </div>
   )
