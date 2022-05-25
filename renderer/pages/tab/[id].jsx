@@ -1,37 +1,37 @@
-import React from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import electron from "electron";
+import React from 'react'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import electron from 'electron'
 
-const ipcRenderer = electron.ipcRenderer || false;
+const ipcRenderer = electron.ipcRenderer || false
 
 function Tab() {
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter()
+  const { id } = router.query
 
   // const [message, setMessage] = React.useState("");
-  const [messageName, setMessageName] = React.useState("");
+  const [messageName, setMessageName] = React.useState('')
 
   React.useEffect(() => {
     // like componentDidMount()
-    const tmpMessage = ipcRenderer.sendSync("get-message", id);
+    const tmpMessage = ipcRenderer.sendSync('get-message', id)
     // setMessage(tmpMessage);
-    setMessageName(tmpMessage.name);
+    setMessageName(tmpMessage.name)
 
     return () => {
       // like componentWillUnmount()
-    };
-  }, []);
+    }
+  }, [])
 
-  const onChange = (e) => setMessageName(e.target.value);
+  const onChange = (e) => setMessageName(e.target.value)
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    ipcRenderer.send("edit-message", { id, messageName });
-    console.log("ran onsubmit");
-  };
+    ipcRenderer.send('edit-message', { id, messageName })
+    console.log('ran onsubmit')
+  }
 
   return (
     <React.Fragment>
@@ -62,7 +62,7 @@ function Tab() {
         </form>
       </div>
     </React.Fragment>
-  );
+  )
 }
 
-export default Tab;
+export default Tab

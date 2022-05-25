@@ -1,21 +1,21 @@
-import electron from "electron";
-import React from "react";
-import Head from "next/head";
-import Link from "next/link";
+import electron from 'electron'
+import React from 'react'
+import Head from 'next/head'
+import Link from 'next/link'
 
-const ipcRenderer = electron.ipcRenderer || false;
+const ipcRenderer = electron.ipcRenderer || false
 
 function Home() {
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState([])
 
   React.useEffect(() => {
     // like componentDidMount()
-    setMessages(ipcRenderer.sendSync("get-messages"));
+    setMessages(ipcRenderer.sendSync('get-messages'))
 
     return () => {
       // like componentWillUnmount()
-    };
-  }, []);
+    }
+  }, [])
 
   // const onChange = (e) => setMessage(e.target.value);
 
@@ -48,7 +48,7 @@ function Home() {
         </Link> */}
 
         {messages.map((message, index) => (
-          <Link href={"/tab/" + index} key={index}>
+          <Link href={'/tab/' + index} key={index}>
             <a className="btn-blue">{message.name}</a>
           </Link>
         ))}
@@ -70,7 +70,7 @@ function Home() {
         </ul>
       </div> */}
     </React.Fragment>
-  );
+  )
 }
 
-export default Home;
+export default Home
