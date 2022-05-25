@@ -9,6 +9,7 @@ const ipcRenderer = electron.ipcRenderer || false
 const Toolbar = ({}) => {
   const [username, setUsername] = useState('username')
   const [hostname, setHostname] = useState('hostname')
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const data = ipcRenderer.sendSync('get-username-hostname')
@@ -21,10 +22,27 @@ const Toolbar = ({}) => {
       <div className="flex items-center justify-between">
         <div className="p-2 flex items-center space-x-3">
           <div>
-            <button className="flex items-center space-x-1 text-sm font-bold">
+            <button
+              className="flex items-center space-x-1 text-sm font-bold"
+              onClick={() => {
+                setVisible(!visible)
+              }}
+            >
               <span>1/2</span> <BiChevronDown />
             </button>
-            <div className="absolute hidden">select workspaces</div>
+            {visible && (
+              <div
+                className="fixed left-0 bg-dracula-dark-gray border-r border-dracula-gray"
+                style={{
+                  top: '41px',
+                  width: '250px',
+                  height: 'calc(100vh - 41px)',
+                  zIndex: 999999,
+                }}
+              >
+                <div className="p-3">select workspaces</div>
+              </div>
+            )}
           </div>
           <button>
             <HiPlus />

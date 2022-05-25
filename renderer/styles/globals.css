@@ -22,8 +22,12 @@ body {
   border-color: #242530 !important;
 }
 
+.bg-dracula-gray {
+  background: #282a36 !important;
+}
+
 .bg-dracula-dark-gray {
-  background: #30333f !important;
+  background: #1e1f29 !important;
 }
 
 .text-dracula-comment {
@@ -56,11 +60,11 @@ body {
 
 #toolbar {
   background: #1e1f29;
-  border-bottom: 1px solid #21242d;
+  border-bottom: 1px solid #242530;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 99999999;
   width: 100%;
 }
 

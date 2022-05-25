@@ -17,7 +17,7 @@ const TerminalToolbar = ({ command, folderUp, cleanup }) => {
           onClick={() => {
             folderUp()
           }}
-          className="py-1 px-2 bg-dracula-dark-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
+          className="py-1 px-2 bg-dracula-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
         >
           <BsArrowUpSquare />
         </button>
@@ -26,7 +26,7 @@ const TerminalToolbar = ({ command, folderUp, cleanup }) => {
           onClick={() => {
             cleanup()
           }}
-          className="py-1 px-2 bg-dracula-dark-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
+          className="py-1 px-2 bg-dracula-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
         >
           <AiOutlineClear className="mr-1" />
           Cleanup
