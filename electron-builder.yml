@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.minielectron.oceanterminal
+productName: OCean Terminal
+copyright: Copyright © 2022 Wynter Jones
 directories:
   output: dist
   buildResources: resources
