@@ -9,7 +9,7 @@ Made for terminal newbies.
 Start the app in the `dev` environment:
 
 ```bash
-npm start
+npm run dev
 ```
 
 ## Packaging for Production
@@ -17,9 +17,13 @@ npm start
 To package apps for the local platform:
 
 ```bash
-npm run package
+npm run build:all
 ```
 
 ## License
 
-MIT © Based on [Electron React Boilerplate](https://github.com/electron-react-boilerplate)
+MIT © 2022 - Wynter Jones
+
+## Open Source
+
+Based on Nextron (NextJS + ElectronJS)
