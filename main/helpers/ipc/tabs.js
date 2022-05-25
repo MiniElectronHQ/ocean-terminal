@@ -22,6 +22,10 @@ const ipcTabs = (store, ipcMain) => {
     tabs[arg.id].name = arg.tabName
     store.set('tabs', tabs)
   })
+
+  ipcMain.on('save-tabs', (event, tabs) => {
+    store.set('tabs', tabs)
+  })
 }
 
 export default ipcTabs

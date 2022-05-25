@@ -1,8 +1,14 @@
 import { HiPlus } from 'react-icons/hi'
 import Link from 'next/link'
 import Classnames from 'classnames'
+import { useRouter } from 'next/router'
+
+import electron from 'electron'
+const ipcRenderer = electron.ipcRenderer || false
 
 const TabNav = ({ tabs, tabName }) => {
+  const router = useRouter()
+
   return (
     <div id="tablist" className="flex items-center text-sm">
       <div>
@@ -19,7 +25,23 @@ const TabNav = ({ tabs, tabName }) => {
         ))}
       </div>
       <div>
-        <button className="tab text-base" onClick={() => {}}>
+        <button
+          className="tab text-base"
+          onClick={() => {
+            const newTab = {
+              name: '',
+              command: '',
+              ls: '',
+              currentPath: '',
+              output: '',
+              packageJSON: '',
+            }
+            newTab.name = `Tab #${tabs.length + 1}`
+            tabs.push(newTab)
+            ipcRenderer.send('save-tabs', tabs)
+            router.push('/redirector?name=/tab/' + (tabs.length - 1))
+          }}
+        >
           <HiPlus />
         </button>
       </div>

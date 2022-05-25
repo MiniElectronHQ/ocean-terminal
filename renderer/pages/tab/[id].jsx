@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Toolbar from '../../components/Toolbar'
 import TabNav from '../../components/TabNav'
+import WavePanel from '../../components/WavePanel'
 
 const ipcRenderer = electron.ipcRenderer || false
 
@@ -35,21 +36,22 @@ function Tab({}) {
     <>
       <Toolbar />
       <TabNav tabs={tabs} tabName={tabName} />
-
-      <span>
-        ⚡ name: {tabName} - index: {id} ⚡
-      </span>
-      <div className="bg-gray-900 text-white">
-        <h3>Edit Name</h3>
-        <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            className="text-gray-800 p-2"
-            value={tabName}
-            onChange={onChange}
-          />
-        </form>
-      </div>
+      <WavePanel>
+        <span>
+          ⚡ name: {tabName} <br /> index: {id} ⚡
+        </span>
+        <div className="bg-gray-900 text-white">
+          <h3>Edit Name</h3>
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              className="text-gray-800 p-2"
+              value={tabName}
+              onChange={onChange}
+            />
+          </form>
+        </div>
+      </WavePanel>
     </>
   )
 }
