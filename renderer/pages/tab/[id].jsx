@@ -136,16 +136,18 @@ function Tab({}) {
             }}
           />
         )}
-        <XTerm
-          ref={xtermRef}
-          options={{
-            convertEol: true,
-            theme: {
-              background: '#1e1f29',
-            },
-          }}
-          addons={[fitAddon]}
-        />
+        <div id="terminal">
+          <XTerm
+            ref={xtermRef}
+            options={{
+              convertEol: true,
+              theme: {
+                background: '#1e1f29',
+              },
+            }}
+            addons={[fitAddon]}
+          />
+        </div>
       </div>
     </div>
   )
