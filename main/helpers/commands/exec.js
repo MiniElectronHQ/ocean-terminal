@@ -1,14 +1,13 @@
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
-const runSpawnCommand = async (command, cwd) => {
+const execCommand = async (command, cwd) => {
   let result
   try {
     const { error, stdout, stderr } = await exec(command, {
       cwd: cwd,
       shell: true,
       stdio: 'inherit',
-      detached: true,
     })
     if (stderr) {
       result = stderr
@@ -25,4 +24,4 @@ const runSpawnCommand = async (command, cwd) => {
   }
 }
 
-export default runSpawnCommand
+export default execCommand

@@ -8,6 +8,7 @@ import {
   ipcApp,
   ipcTerminal,
 } from './helpers'
+import path from 'path'
 
 const store = new Store()
 const isProd = process.env.NODE_ENV === 'production'
@@ -25,6 +26,9 @@ if (isProd) {
     width: 1324,
     height: 928,
     frame: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+    },
   })
 
   if (isProd) {

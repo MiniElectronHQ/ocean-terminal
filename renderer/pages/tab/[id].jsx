@@ -10,7 +10,7 @@ import FolderViewer from '../../components/FolderViewer'
 import { XTerm } from 'xterm-for-react'
 import { FitAddon } from 'xterm-addon-fit'
 
-const ipcRenderer = electron.ipcRenderer || false
+const ipcRenderer = electron.ipcRenderer
 
 function Tab({}) {
   const router = useRouter()
@@ -30,6 +30,7 @@ function Tab({}) {
   const fitAddon = new FitAddon()
 
   useEffect(() => {
+    console.log({ ipcRenderer }, window.electron)
     setTabs(ipcRenderer.sendSync('get-tabs'))
     const response = ipcRenderer.sendSync('get-tab', id)
     setTab(response)
@@ -41,6 +42,16 @@ function Tab({}) {
     setOutput(response.output)
     xtermRef.current.terminal.write('\x1bc')
     xtermRef.current.terminal.writeUtf8(response.output)
+
+    ipcRenderer.on('reply-spawn-pipe', (result) => {
+      console.log('reply-spawn-pipe', result)
+      // if (xtermRef !== null) {
+      //   xtermRef.current.terminal.writeUtf8(result)
+      //   setOutput(result)
+      //   tab.output = result
+      //   fitAddon.fit()
+      // }
+    })
   }, [])
 
   const onChange = (e) => {
@@ -63,15 +74,12 @@ function Tab({}) {
 
     // send('run-kill-process')
 
-    const result = ipcRenderer.sendSync('run-command', {
+    xtermRef.current.terminal.write('\x1bc')
+
+    ipcRenderer.send('spawn-command', {
       command: command,
       cwd: tab.path,
     })
-    xtermRef.current.terminal.write('\x1bc')
-    xtermRef.current.terminal.writeUtf8(result)
-    setOutput(result)
-    tab.output = result
-    fitAddon.fit()
 
     setTabs(ipcRenderer.sendSync('edit-tab', { id, tab }))
     event.target.value = ''
@@ -81,7 +89,7 @@ function Tab({}) {
     setls('')
     setCommand('cd ../')
     xtermRef.current.terminal.write('\x1bc')
-    ipcRenderer.sendSync('run-command', {
+    ipcRenderer.sendSync('exec-command', {
       command: 'cd ../',
       cwd: tab.path,
     })
@@ -96,7 +104,7 @@ function Tab({}) {
 
   const openFolder = (name) => {
     setCommand(`cd ${name}`)
-    ipcRenderer.sendSync('run-command', {
+    ipcRenderer.sendSync('exec-command', {
       command: `cd ${name}`,
       cwd: tab.path,
     })

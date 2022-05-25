@@ -1,4 +1,4 @@
-import { runCommand } from '../../helpers'
+import { exec, spawn } from '../../helpers'
 
 const ipcTerminal = (store, ipcMain) => {
   ipcMain.on('get-username-hostname', async (event, command) => {
@@ -8,8 +8,13 @@ const ipcTerminal = (store, ipcMain) => {
     }
   })
 
-  ipcMain.on('run-command', async (event, args) => {
-    const result = await runCommand(args.command, args.cwd)
+  ipcMain.on('exec-command', async (event, args) => {
+    const result = await exec(args.command, args.cwd)
+    event.returnValue = result
+  })
+
+  ipcMain.on('spawn-command', async (event, args) => {
+    const result = await spawn(event, args.command, args.cwd)
     event.returnValue = result
   })
 }
