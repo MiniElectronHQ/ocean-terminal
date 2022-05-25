@@ -2,14 +2,209 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-900 text-white;
-  }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #282a36;
+  color: #f8f8f2;
+  padding-top: 79px;
+  padding-right: 200px;
 }
 
-@layer components {
-  .btn-blue {
-    @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
-  }
+.hover-bg-dracula-semidark:hover {
+  background: #30333f !important;
+}
+
+.border-dracula-gray {
+  border-color: #242530 !important;
+}
+
+.bg-dracula-dark-gray {
+  background: #30333f !important;
+}
+
+.text-dracula-comment {
+  color: #6272a4 !important;
+}
+.text-dracula-red {
+  color: #ff5555 !important;
+}
+.text-dracula-gray {
+  color: #44475a !important;
+}
+.text-dracula-light-gray {
+  color: #676a7d !important;
+}
+.text-dracula-cyan {
+  color: #8be9fd !important;
+}
+.text-dracula-orange {
+  color: #ffb86c !important;
+}
+.text-dracula-green {
+  color: #50fa7b !important;
+}
+.text-dracula-purple {
+  color: #bd93f9 !important;
+}
+.text-dracula-yellow {
+  color: #f1fa8c !important;
+}
+
+#toolbar {
+  background: #1e1f29;
+  border-bottom: 1px solid #21242d;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+}
+
+#infoPanel-headline {
+  border-bottom: 1px solid #30333f;
+}
+
+#tablist {
+  background: #1e1f29;
+  border-top: 1px solid #14151a;
+  border-bottom: 1px solid #30333f;
+  position: fixed;
+  top: 41px;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+  padding: 3px;
+}
+
+#tablist .tab {
+  padding: 7px 10px;
+  border-radius: 3px;
+  color: #44475a;
+  margin-right: 3px;
+  font-weight: 700;
+}
+
+#tablist .tab.tab-active,
+#tablist .tab:hover {
+  color: #fff;
+  background: #282a36;
+}
+
+#infoPanel {
+  background: #1e1f29;
+  border-left: 1px solid #30333f;
+  top: 83px;
+  height: calc(100vh - 79px);
+  width: 200px;
+  position: fixed;
+  right: 0;
+  z-index: 99999;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+#terminal {
+  width: 100%;
+  height: calc(100vh - 175px);
+  overflow: hidden;
+  border: 1px solid #30333f;
+  background: #1e1f29;
+  border-radius: 7px;
+  border-top-left-radius: 0;
+  color: #f8f8f2;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 17px;
+  white-space: pre;
+  padding-top: 60px;
+}
+
+#terminalReminder {
+  overflow: auto;
+  border: 1px solid #30333f;
+  background: #1e1f29;
+  border-top-left-radius: 0;
+  border-top-right-radius: 7px;
+  color: #6272a4;
+  padding: 10px;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 10px;
+  white-space: pre;
+  margin-bottom: 5px;
+  margin: 0 auto;
+}
+
+input:focus {
+  outline: none;
+}
+
+.bg-dark {
+  background: #f9f9f9;
+}
+
+input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #44475a;
+  opacity: 1; /* Firefox */
+}
+
+.form-control {
+  padding: 6px 13px;
+  font-weight: 400;
+  background: #fff;
+  color: #333;
+  font-weight: 600;
+  font-size: 21px;
+  border-radius: 3px;
+}
+
+.btn {
+  padding: 7px 14px;
+  font-weight: 600;
+  color: #555;
+  background: #f9f9f9;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 13px;
+  transition: all 0.1s ease-in;
+}
+
+.btn.large {
+  font-size: 21px;
+}
+.btn.primary {
+  background: #ea4c89;
+  color: #fff;
+}
+
+.btn-selected {
+  background: #f3f9fe;
+  color: #168af8;
+}
+
+.can-drag {
+  /* -webkit-user-select: none; */
+  -webkit-app-region: drag;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #111;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #111;
 }

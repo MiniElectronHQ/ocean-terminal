@@ -16,8 +16,9 @@ if (isProd) {
   await app.whenReady()
 
   const mainWindow = createWindow('main', {
-    width: 1000,
-    height: 600,
+    width: 1324,
+    height: 928,
+    frame: false,
   })
 
   if (isProd) {
@@ -27,48 +28,65 @@ if (isProd) {
     await mainWindow.loadURL(`http://localhost:${port}/home`)
     mainWindow.webContents.openDevTools()
   }
+
+  mainWindow.on('ready-to-show', async () => {
+    mainWindow.show()
+  })
 })()
 
 app.on('window-all-closed', () => {
   app.quit()
 })
 
-// --------------
+// -------------- Store --------------
 
 const store = new Store()
 
-store.set('messages', [
+store.set('tabs', [
   {
-    name: 'tab 1',
+    name: 'Tab #1',
+    command: '',
+    ls: '',
+    currentPath: '',
+    output: '',
+    packageJSON: '',
   },
   {
-    name: 'tab 2',
-  },
-  {
-    name: 'tab 3',
+    name: 'Tab #2',
+    command: '',
+    ls: '',
+    currentPath: '',
+    output: '',
+    packageJSON: '',
   },
 ])
 
-ipcMain.on('get-message', (event, id) => {
-  const messages = store.get('messages') || []
-  event.returnValue = messages[id]
+ipcMain.on('get-tab', (event, id) => {
+  const tabs = store.get('tabs') || []
+  event.returnValue = tabs[id]
 })
 
-ipcMain.on('get-messages', (event, arg) => {
-  event.returnValue = store.get('messages') || []
+ipcMain.on('get-tabs', (event, arg) => {
+  event.returnValue = store.get('tabs') || []
 })
 
-ipcMain.on('add-message', (event, arg) => {
-  const messages = store.get('messages') || []
-  messages.push({
+ipcMain.on('add-tab', (event, arg) => {
+  const tabs = store.get('tabs') || []
+  tabs.push({
     name: arg,
   })
-  store.set('messages', messages)
+  store.set('tabs', tabs)
 })
 
-ipcMain.on('edit-message', (event, arg) => {
+ipcMain.on('edit-tab', (event, arg) => {
   console.log(arg)
-  const messages = store.get('messages') || []
-  messages[arg.id].name = arg.messageName
-  store.set('messages', messages)
+  const tabs = store.get('tabs') || []
+  tabs[arg.id].name = arg.tabName
+  store.set('tabs', tabs)
+})
+
+// -------------- General --------------
+
+ipcMain.on('close-app', (event, arg) => {
+  app.quit()
 })

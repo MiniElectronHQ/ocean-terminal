@@ -16,8 +16,10 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "electron-serve": "^1.1.0",
-    "electron-store": "^8.0.1"
+    "electron-store": "^8.0.1",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
