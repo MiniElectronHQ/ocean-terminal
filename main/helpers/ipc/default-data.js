@@ -7,25 +7,25 @@ const ipcDefaultData = (store) => {
   store.set('tabs', [
     {
       name: 'Tab #1',
+      path: '/home/wynter',
       command: '',
       ls: '',
-      currentPath: '',
       output: '',
       packageJSON: '',
     },
     {
       name: 'Tab #2',
+      path: '/home/wynter',
       command: '',
       ls: '',
-      currentPath: '',
       output: '',
       packageJSON: '',
     },
     {
       name: 'Tab #3',
+      path: '/home/wynter',
       command: '',
       ls: '',
-      currentPath: '',
       output: '',
       packageJSON: '',
     },

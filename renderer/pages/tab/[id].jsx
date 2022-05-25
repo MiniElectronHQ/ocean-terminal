@@ -21,7 +21,7 @@ function Tab({}) {
   const [tab, setTab] = useState({})
 
   const [command, setCommand] = useState('')
-  const [currentPath, setCurrentPath] = useState('')
+  const [path, setPath] = useState('')
   const [packageJSON, setPackageJSON] = useState('')
   const [ls, setls] = useState('')
   const [output, setOutput] = useState('')
@@ -35,10 +35,12 @@ function Tab({}) {
     setTab(response)
     setTabName(response.name)
     setCommand(response.command)
-    setCurrentPath(response.currentPath)
+    setPath(response.path)
     setPackageJSON(response.packageJSON)
     setls(response.ls)
     setOutput(response.output)
+    xtermRef.current.terminal.write('\x1bc')
+    xtermRef.current.terminal.writeUtf8(response.output)
   }, [])
 
   const onChange = (e) => {
@@ -54,37 +56,50 @@ function Tab({}) {
   }
 
   const submitCommand = (event) => {
-    console.log('submit from tab', id, 'with command:', event.target.value)
-    setCommand(event.target.value)
-    tab.command = event.target.value
+    setls('')
+    const command = event.target.value
+    setCommand(command)
+    tab.command = command
 
     // send('run-kill-process')
-    // setls('')
-    // runCommand('clear')
-    // runCommand(event.target.value)
 
-    const updatedTabs = ipcRenderer.sendSync('edit-tab', { id, tab })
-    setTabs(updatedTabs)
+    const result = ipcRenderer.sendSync('run-command', {
+      command: command,
+      cwd: tab.path,
+    })
+    xtermRef.current.terminal.write('\x1bc')
+    xtermRef.current.terminal.writeUtf8(result)
+    setOutput(result)
+    tab.output = result
+    fitAddon.fit()
+
+    setTabs(ipcRenderer.sendSync('edit-tab', { id, tab }))
     event.target.value = ''
   }
 
   const folderUp = () => {
-    // setls('')
-    // runCommand('clear')
-    // setCommand('cd ../')
-    // runCommand('cd ../')
+    setls('')
+    setCommand('cd ../')
+    xtermRef.current.terminal.write('\x1bc')
+    ipcRenderer.sendSync('run-command', {
+      command: 'cd ../',
+      cwd: tab.path,
+    })
   }
 
   const cleanup = () => {
     // send('run-kill-process')
-    // setCommand('')
-    // setls('')
-    // runCommand('clear')
+    setCommand('')
+    setls('')
+    xtermRef.current.terminal.write('\x1bc')
   }
 
   const openFolder = (name) => {
-    // setCommand(`cd ${name}`)
-    // runCommand(`cd ${name}`)
+    setCommand(`cd ${name}`)
+    ipcRenderer.sendSync('run-command', {
+      command: `cd ${name}`,
+      cwd: tab.path,
+    })
   }
 
   return (
@@ -111,7 +126,7 @@ function Tab({}) {
         </div> */}
       </WavePanel>
       <CommandLine
-        currentPath={tab.currentPath}
+        path={path}
         submitCommand={(event) => {
           submitCommand(event)
         }}

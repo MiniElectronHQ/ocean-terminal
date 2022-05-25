@@ -8,8 +8,8 @@ const ipcTerminal = (store, ipcMain) => {
     }
   })
 
-  ipcMain.on('run-command', async (event, command) => {
-    const result = await runCommand(command)
+  ipcMain.on('run-command', async (event, args) => {
+    const result = await runCommand(args.command, args.cwd)
     event.returnValue = result
   })
 }

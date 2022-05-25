@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MdFolderOpen } from 'react-icons/md'
 import { FaDollarSign } from 'react-icons/fa'
 
-const CommandLine = ({ currentPath, submitCommand }) => {
+const CommandLine = ({ path, submitCommand }) => {
   const [inputValue, setInputValue] = useState('')
 
   return (
@@ -10,7 +10,7 @@ const CommandLine = ({ currentPath, submitCommand }) => {
       <h3 className="font-bold flex space-x-2 items-center text-dracula-cyan">
         <MdFolderOpen />
         <span className="text-dracula-yellow truncate w-full block">
-          ~{currentPath}
+          ~{path}
         </span>
       </h3>
       <div className="flex items-center font-bold">
