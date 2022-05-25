@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import electron from 'electron'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Toolbar from '../../components/Toolbar'
 import TabNav from '../../components/TabNav'
 
@@ -12,7 +11,6 @@ function Tab({}) {
   const { id } = router.query
 
   const [tabName, setTabName] = useState('')
-
   const [tabs, setTabs] = useState([])
 
   useEffect(() => {
@@ -22,8 +20,6 @@ function Tab({}) {
   useEffect(() => {
     const tmptab = ipcRenderer.sendSync('get-tab', id)
     setTabName(tmptab.name)
-
-    return () => {}
   }, [])
 
   const onChange = (e) => setTabName(e.target.value)
@@ -33,7 +29,6 @@ function Tab({}) {
 
     ipcRenderer.send('edit-tab', { id, tabName })
     setTabs(ipcRenderer.sendSync('get-tabs'))
-    console.log('ran onsubmit')
   }
 
   return (

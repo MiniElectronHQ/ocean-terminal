@@ -3,9 +3,6 @@ import { HiPlus } from 'react-icons/hi'
 import { BiChevronDown } from 'react-icons/bi'
 import { VscCircleLargeFilled } from 'react-icons/vsc'
 
-// import send from '../utils/send'
-// import reply from '../utils/reply'
-
 import electron from 'electron'
 const ipcRenderer = electron.ipcRenderer || false
 
@@ -13,19 +10,11 @@ const Toolbar = ({}) => {
   const [username, setUsername] = useState('username')
   const [hostname, setHostname] = useState('hostname')
 
-  // useEffect(() => {
-  //   send('run-get-username')
-
-  //   reply('run-get-username', (result) => {
-  //     setUsername(result.trim())
-
-  //     send('run-get-hostname')
-
-  //     reply('run-get-hostname', (result) => {
-  //       setHostname(result)
-  //     })
-  //   })
-  // })
+  useEffect(() => {
+    const data = ipcRenderer.sendSync('get-username-hostname')
+    setHostname(data.hostname)
+    setUsername(data.username)
+  }, [])
 
   return (
     <div id="toolbar">
@@ -45,9 +34,9 @@ const Toolbar = ({}) => {
           ocean
           <span className="text-dracula-cyan">::</span>terminal{'  '}
           <span className="text-dracula-cyan ml-1">
-            [username
+            [{username}
             <span className="text-dracula-gray">@</span>
-            hostname]
+            {hostname}]
           </span>
         </div>
         <button

@@ -7,8 +7,6 @@ function Redirector() {
   useEffect(() => {
     router.push(router.query.name)
   })
-
-  return <>{/* empty just to redirect... */}</>
 }
 
 export default Redirector

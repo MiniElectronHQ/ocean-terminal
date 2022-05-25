@@ -1,9 +1,15 @@
 import { app, ipcMain } from 'electron'
 import serve from 'electron-serve'
-import { createWindow } from './helpers'
-
 import Store from 'electron-store'
+import {
+  createWindow,
+  ipcDefaultData,
+  ipcTabs,
+  ipcApp,
+  ipcTerminal,
+} from './helpers'
 
+const store = new Store()
 const isProd = process.env.NODE_ENV === 'production'
 
 if (isProd) {
@@ -24,8 +30,7 @@ if (isProd) {
   if (isProd) {
     await mainWindow.loadURL('app://./home.html')
   } else {
-    const port = process.argv[2]
-    await mainWindow.loadURL(`http://localhost:${port}/home`)
+    await mainWindow.loadURL(`http://localhost:${process.argv[2]}/home`)
     mainWindow.webContents.openDevTools()
   }
 
@@ -38,55 +43,7 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-// -------------- Store --------------
-
-const store = new Store()
-
-store.set('tabs', [
-  {
-    name: 'Tab #1',
-    command: '',
-    ls: '',
-    currentPath: '',
-    output: '',
-    packageJSON: '',
-  },
-  {
-    name: 'Tab #2',
-    command: '',
-    ls: '',
-    currentPath: '',
-    output: '',
-    packageJSON: '',
-  },
-])
-
-ipcMain.on('get-tab', (event, id) => {
-  const tabs = store.get('tabs') || []
-  event.returnValue = tabs[id]
-})
-
-ipcMain.on('get-tabs', (event, arg) => {
-  event.returnValue = store.get('tabs') || []
-})
-
-ipcMain.on('add-tab', (event, arg) => {
-  const tabs = store.get('tabs') || []
-  tabs.push({
-    name: arg,
-  })
-  store.set('tabs', tabs)
-})
-
-ipcMain.on('edit-tab', (event, arg) => {
-  console.log(arg)
-  const tabs = store.get('tabs') || []
-  tabs[arg.id].name = arg.tabName
-  store.set('tabs', tabs)
-})
-
-// -------------- General --------------
-
-ipcMain.on('close-app', (event, arg) => {
-  app.quit()
-})
+ipcDefaultData(store)
+ipcTabs(store, ipcMain)
+ipcTerminal(store, ipcMain)
+ipcApp(store, ipcMain, app)
