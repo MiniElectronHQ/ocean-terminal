@@ -1,38 +1,25 @@
-<p align="center"><img src="https://i.imgur.com/P08L8HO.png"></p>
+# 🪶 Ocean Terminal
 
-## Usage
+Made for terminal newbies.
 
-### Create an App
+<img src="/screenshot-v0.0.3.png" alt="Ocean Terminal" />
 
-```
-# with npx
-$ npx create-nextron-app my-app --example with-javascript-tailwindcss
+## Starting Development
 
-# with yarn
-$ yarn create nextron-app my-app --example with-javascript-tailwindcss
+Start the app in the `dev` environment:
 
-# with pnpx
-$ pnpx create-nextron-app my-app --example with-javascript-tailwindcss
+```bash
+npm start
 ```
 
-### Install Dependencies
+## Packaging for Production
 
-```
-$ cd my-app
+To package apps for the local platform:
 
-# using yarn or npm
-$ yarn (or `npm install`)
-
-# using pnpm
-$ pnpm install --shamefully-hoist
+```bash
+npm run package
 ```
 
-### Use it
+## License
 
-```
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
-
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
-```
+MIT © Based on [Electron React Boilerplate](https://github.com/electron-react-boilerplate)
