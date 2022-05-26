@@ -27,7 +27,7 @@ function Tab() {
     setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
     setTab(currentTab)
     setCommand(currentTab.command)
-    setPath(currentTab.path)
+    setPath(visiblePath(currentTab.path))
     xtermRef.current.terminal.writeUtf8('\x1bc')
     xtermRef.current.terminal.writeUtf8(currentTab.output)
   }, [id])
@@ -59,7 +59,7 @@ function Tab() {
     setCommand(command)
     tab.command = command
     tab.output = ''
-    setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
+
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,
       cwd: tab.path,
@@ -69,6 +69,7 @@ function Tab() {
     }
     xtermRef.current.terminal.writeUtf8('\x1bc')
     event.target.value = ''
+    setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
   }
 
   const folderUp = () => {
@@ -90,8 +91,19 @@ function Tab() {
     setTimeout(() => {
       const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
       setTab(currentTab)
-      setPath(currentTab.path)
+      setPath(visiblePath(currentTab.path))
     }, 50)
+  }
+
+  const visiblePath = (path) => {
+    return path.replace(
+      `/home/${
+        window.electron.ipcRenderer.sendSync('get-username-hostname')[
+          'username'
+        ]
+      }`,
+      ''
+    )
   }
 
   const openFolder = (item) => {
@@ -109,12 +121,13 @@ function Tab() {
       <Toolbar />
       <TabNav tabs={tabs} tabName={tab.name} />
       <WavePanel
+        tab={tab}
         openFolder={(item) => {
           openFolder(item)
         }}
       >
         {/* <span className="text-xs">
-          <h3>index: {id}</h3> 
+          <h3>index: {id}</h3>
           <div className="whitespace-pre mt-2">
             {JSON.stringify(tab, null, 2)}
           </div>
