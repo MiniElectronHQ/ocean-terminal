@@ -59,30 +59,39 @@ function Tab() {
     setCommand(command)
     tab.command = command
     tab.output = ''
-
+    setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,
       cwd: tab.path,
     })
-
+    if (command.split(' ')[0] === 'cd') {
+      updatePath()
+    }
     xtermRef.current.terminal.writeUtf8('\x1bc')
-
-    setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
     event.target.value = ''
   }
 
   const folderUp = () => {
     setCommand('cd ../')
     xtermRef.current.terminal.writeUtf8('\x1bc')
-    window.electron.ipcRenderer.sendSync('exec-command', {
+    window.electron.ipcRenderer.send('spawn-command', {
       command: 'cd ../',
       cwd: tab.path,
     })
+    updatePath()
   }
 
   const cleanup = () => {
     setCommand('')
     xtermRef.current.terminal.writeUtf8('\x1bc')
+  }
+
+  const updatePath = () => {
+    setTimeout(() => {
+      const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
+      setTab(currentTab)
+      setPath(currentTab.path)
+    }, 50)
   }
 
   return (

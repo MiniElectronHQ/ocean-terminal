@@ -28,8 +28,7 @@ const TerminalToolbar = ({ command, folderUp, cleanup }) => {
           }}
           className="py-1 px-2 bg-dracula-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
         >
-          <AiOutlineClear className="mr-1" />
-          Cleanup
+          <AiOutlineClear />
         </button>
       </div>
     </div>

@@ -14,7 +14,7 @@ const ipcTerminal = (store, ipcMain) => {
   })
 
   ipcMain.on('spawn-command', async (event, args) => {
-    await spawn(event, args.command, args.cwd)
+    await spawn(event, args.command, args.cwd, store)
   })
 }
 
