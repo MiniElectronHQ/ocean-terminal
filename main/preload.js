@@ -14,7 +14,6 @@ contextBridge.exposeInMainWorld('electron', {
       return function () {
         return ipcRenderer.removeListener(channel, subscription)
       }
-      // ipcRenderer.on(eventName, callback)
     },
   },
   data: {

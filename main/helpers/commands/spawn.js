@@ -14,9 +14,7 @@ const spawnCommand = async (event, command, cwd) => {
 
     child.stdout.on('data', (data) => {
       result = data.toString()
-      if (result) {
-        event.reply('reply-spawn-pipe', result.trim())
-      }
+      event.reply('reply-spawn-pipe', result.trim())
     })
   } catch (e) {
     result = 'Error: ' + e
