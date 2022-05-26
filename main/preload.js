@@ -1,11 +1,21 @@
-const { contextBridge, ipcRenderer } = require('electron')
-console.log('preload...')
+const {
+  contextBridge,
+  ipcRenderer,
+  IpcRendererEvent,
+  shell,
+} = require('electron')
+
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
-    // ...ipcRenderer,
-    // on(eventName, callback) {
-    //   ipcRenderer.on(eventName, callback)
-    // },
+    ...ipcRenderer,
+    on(channel, callback) {
+      ipcRenderer.on(channel, callback)
+
+      return function () {
+        return ipcRenderer.removeListener(channel, subscription)
+      }
+      // ipcRenderer.on(eventName, callback)
+    },
   },
   data: {
     myFlags: ['a', 'b', 'c'],

@@ -11,19 +11,16 @@ const spawnCommand = async (event, command, cwd) => {
       shell: true,
       detached: true,
     })
-    event.reply('reply-spawn-pipe', 'test')
+
+    child.stdout.on('data', (data) => {
+      result = data.toString()
+      if (result) {
+        event.reply('reply-spawn-pipe', result.trim())
+      }
+    })
   } catch (e) {
     result = 'Error: ' + e
     return result
-  }
-
-  if (child) {
-    child.stdout.on('data', (data) => {
-      console.log(data.toString())
-      result = data.toString()
-      // return result.trim(result)
-      event.reply('reply-spawn-pipe', data.toString())
-    })
   }
 }
 

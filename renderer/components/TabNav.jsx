@@ -3,9 +3,6 @@ import Link from 'next/link'
 import Classnames from 'classnames'
 import { useRouter } from 'next/router'
 
-import electron from 'electron'
-const ipcRenderer = electron.ipcRenderer || false
-
 const TabNav = ({ tabs, tabName }) => {
   const router = useRouter()
 
@@ -38,7 +35,7 @@ const TabNav = ({ tabs, tabName }) => {
             }
             newTab.name = `Tab #${tabs.length + 1}`
             tabs.push(newTab)
-            ipcRenderer.send('save-tabs', tabs)
+            window.electron.ipcRenderer.send('save-tabs', tabs)
             router.push('/redirector?name=/tab/' + (tabs.length - 1))
           }}
         >

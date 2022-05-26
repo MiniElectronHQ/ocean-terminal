@@ -1,5 +1,6 @@
 import { screen, BrowserWindow } from 'electron'
 import Store from 'electron-store'
+import path from 'path'
 
 export default function createWindow(windowName, options) {
   const key = 'window-state'
@@ -66,9 +67,11 @@ export default function createWindow(windowName, options) {
   win = new BrowserWindow({
     ...options,
     ...state,
+
     webPreferences: {
+      preload: path.join(__dirname, './preload.js'),
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
       ...options.webPreferences,
     },
   })

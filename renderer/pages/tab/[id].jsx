@@ -1,4 +1,3 @@
-import electron from 'electron'
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Toolbar from '../../components/Toolbar'
@@ -9,10 +8,9 @@ import TerminalToolbar from '../../components/TerminalToolbar'
 import FolderViewer from '../../components/FolderViewer'
 import { XTerm } from 'xterm-for-react'
 import { FitAddon } from 'xterm-addon-fit'
+import _ from 'lodash'
 
-const ipcRenderer = electron.ipcRenderer
-
-function Tab({}) {
+function Tab() {
   const router = useRouter()
   const { id } = router.query
 
@@ -30,9 +28,8 @@ function Tab({}) {
   const fitAddon = new FitAddon()
 
   useEffect(() => {
-    console.log({ ipcRenderer }, window.electron)
-    setTabs(ipcRenderer.sendSync('get-tabs'))
-    const response = ipcRenderer.sendSync('get-tab', id)
+    setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
+    const response = window.electron.ipcRenderer.sendSync('get-tab', id)
     setTab(response)
     setTabName(response.name)
     setCommand(response.command)
@@ -40,17 +37,21 @@ function Tab({}) {
     setPackageJSON(response.packageJSON)
     setls(response.ls)
     setOutput(response.output)
-    xtermRef.current.terminal.write('\x1bc')
-    xtermRef.current.terminal.writeUtf8(response.output)
+  }, [])
 
-    ipcRenderer.on('reply-spawn-pipe', (result) => {
-      console.log('reply-spawn-pipe', result)
-      // if (xtermRef !== null) {
-      //   xtermRef.current.terminal.writeUtf8(result)
-      //   setOutput(result)
-      //   tab.output = result
-      //   fitAddon.fit()
-      // }
+  useEffect(() => {
+    let testTerm = xtermRef.current.terminal
+    let testFitAddon = fitAddon
+
+    window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
+      if (result === '\n' || result === '' || result === '\r\n') {
+        testTerm.write(result)
+      } else if (result !== '\u001b[H\u001b[2J\u001b[3J') {
+        testTerm.write(`${result}\n`)
+      } else {
+        testTerm.write(result)
+      }
+      testFitAddon.fit()
     })
   }, [])
 
@@ -62,8 +63,8 @@ function Tab({}) {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    ipcRenderer.send('edit-tab', { id, tab })
-    setTabs(ipcRenderer.sendSync('get-tabs'))
+    window.electron.ipcRenderer.send('edit-tab', { id, tab })
+    setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
   }
 
   const submitCommand = (event) => {
@@ -74,14 +75,14 @@ function Tab({}) {
 
     // send('run-kill-process')
 
-    xtermRef.current.terminal.write('\x1bc')
-
-    ipcRenderer.send('spawn-command', {
+    window.electron.ipcRenderer.send('spawn-command', {
       command: command,
       cwd: tab.path,
     })
 
-    setTabs(ipcRenderer.sendSync('edit-tab', { id, tab }))
+    xtermRef.current.terminal.writeUtf8('\x1bc')
+
+    setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
     event.target.value = ''
   }
 
@@ -89,7 +90,7 @@ function Tab({}) {
     setls('')
     setCommand('cd ../')
     xtermRef.current.terminal.write('\x1bc')
-    ipcRenderer.sendSync('exec-command', {
+    window.electron.ipcRenderer.sendSync('exec-command', {
       command: 'cd ../',
       cwd: tab.path,
     })
@@ -104,7 +105,7 @@ function Tab({}) {
 
   const openFolder = (name) => {
     setCommand(`cd ${name}`)
-    ipcRenderer.sendSync('exec-command', {
+    window.electron.ipcRenderer.sendSync('exec-command', {
       command: `cd ${name}`,
       cwd: tab.path,
     })
@@ -159,18 +160,20 @@ function Tab({}) {
             }}
           />
         )}
-        <div id="terminal">
-          <XTerm
-            ref={xtermRef}
-            options={{
-              convertEol: true,
-              theme: {
-                background: '#1e1f29',
-              },
-            }}
-            addons={[fitAddon]}
-          />
-        </div>
+        <XTerm
+          className="terminal"
+          ref={xtermRef}
+          options={{
+            convertEol: true,
+            theme: {
+              background: '#1e1f29',
+            },
+            // fontFamily: `'Fira Mono', monospace`,
+            fontSize: 14,
+            fontWeight: 900,
+          }}
+          addons={[fitAddon]}
+        />
       </div>
     </div>
   )

@@ -3,16 +3,13 @@ import { HiPlus } from 'react-icons/hi'
 import { BiChevronDown } from 'react-icons/bi'
 import { VscCircleLargeFilled } from 'react-icons/vsc'
 
-import electron from 'electron'
-const ipcRenderer = electron.ipcRenderer || false
-
 const Toolbar = ({}) => {
   const [username, setUsername] = useState('username')
   const [hostname, setHostname] = useState('hostname')
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const data = ipcRenderer.sendSync('get-username-hostname')
+    const data = window.electron.ipcRenderer.sendSync('get-username-hostname')
     setHostname(data.hostname)
     setUsername(data.username)
   }, [])
@@ -60,7 +57,7 @@ const Toolbar = ({}) => {
         <button
           type="button"
           onClick={() => {
-            ipcRenderer.sendSync('close-app')
+            window.electron.ipcRenderer.sendSync('close-app')
           }}
           className="cursor-pointer mr-2"
           style={{

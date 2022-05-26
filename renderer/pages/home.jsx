@@ -1,17 +1,15 @@
 import Toolbar from '../components/Toolbar'
 import WavePanel from '../components/WavePanel'
 import TabNav from '../components/TabNav'
-import electron from 'electron'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
-const ipcRenderer = electron.ipcRenderer || false
 
 function Home() {
   const [tabs, setTabs] = useState([])
 
   useEffect(() => {
-    setTabs(ipcRenderer.sendSync('get-tabs'))
+    console.log(window.electron)
+    setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
   }, [])
 
   return (
