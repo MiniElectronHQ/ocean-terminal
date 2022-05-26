@@ -40,12 +40,23 @@ const TabNav = ({ tabs, tabName }) => {
           className="tab text-base"
           onClick={() => {
             const newTab = {
-              name: '',
+              name: 'Tab #1',
+              path: `/home/${
+                window.electron.ipcRenderer.sendSync('get-username-hostname')[
+                  'username'
+                ]
+              }`,
               command: '',
-              ls: '',
-              currentPath: '',
               output: '',
-              packageJSON: '',
+              wave: {
+                folders: [],
+                files: [],
+                dev: {
+                  package_json: '',
+                  git: '',
+                  readme: '',
+                },
+              },
             }
             newTab.name = `Tab #${tabs.length + 1}`
             tabs.push(newTab)
@@ -55,6 +66,17 @@ const TabNav = ({ tabs, tabName }) => {
         >
           <HiPlus />
         </button>
+        {/* <div className="bg-gray-900 text-white">
+          <h3>Edit Name</h3>
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              className="text-gray-800 p-2"
+              value={tabName}
+              onChange={onChange}
+            />
+          </form>
+        </div> */}
       </div>
     </div>
   )

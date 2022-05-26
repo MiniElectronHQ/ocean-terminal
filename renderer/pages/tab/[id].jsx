@@ -5,7 +5,6 @@ import TabNav from '../../components/TabNav'
 import WavePanel from '../../components/WavePanel'
 import CommandLine from '../../components/CommandLine'
 import TerminalToolbar from '../../components/TerminalToolbar'
-import FolderViewer from '../../components/FolderViewer'
 import { XTerm } from 'xterm-for-react'
 import { FitAddon } from 'xterm-addon-fit'
 import _ from 'lodash'
@@ -16,27 +15,21 @@ function Tab() {
 
   const [tabs, setTabs] = useState([])
   const [tab, setTab] = useState({})
-
   const [command, setCommand] = useState('')
   const [path, setPath] = useState('')
-  const [packageJSON, setPackageJSON] = useState('')
-  const [ls, setls] = useState('')
-  const [output, setOutput] = useState('')
 
   const xtermRef = useRef(null)
   const fitAddon = new FitAddon()
 
   useEffect(() => {
+    const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
+    window.electron.ipcRenderer.send('set-current-tab-id', id)
     setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
-    const response = window.electron.ipcRenderer.sendSync('get-tab', id)
-    setTab(response)
-    setCommand(response.command)
-    setPath(response.path)
-    setPackageJSON(response.packageJSON)
-    setls(response.ls)
-    setOutput(response.output)
+    setTab(currentTab)
+    setCommand(currentTab.command)
+    setPath(currentTab.path)
     xtermRef.current.terminal.writeUtf8('\x1bc')
-    xtermRef.current.terminal.write(response.output)
+    xtermRef.current.terminal.writeUtf8(currentTab.output)
   }, [id])
 
   useEffect(() => {
@@ -44,22 +37,28 @@ function Tab() {
     let testFitAddon = fitAddon
 
     window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
-      if (result === '\n' || result === '' || result === '\r\n') {
-        testTerm.write(result)
-      } else if (result !== '\u001b[H\u001b[2J\u001b[3J') {
-        testTerm.write(`${result}\n`)
+      if (result !== '\u001b[H\u001b[2J\u001b[3J') {
+        testTerm.writeUtf8(`${result}\n`)
       } else {
-        testTerm.write(result)
+        testTerm.writeUtf8(result)
       }
       testFitAddon.fit()
+
+      const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
+      const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
+      currentTab.output = currentTab.output + result
+      window.electron.ipcRenderer.sendSync('edit-tab', {
+        id,
+        tab: currentTab,
+      })
     })
   }, [])
 
   const submitCommand = (event) => {
-    setls('')
     const command = event.target.value
     setCommand(command)
     tab.command = command
+    tab.output = ''
 
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,
@@ -73,9 +72,8 @@ function Tab() {
   }
 
   const folderUp = () => {
-    setls('')
     setCommand('cd ../')
-    xtermRef.current.terminal.write('\x1bc')
+    xtermRef.current.terminal.writeUtf8('\x1bc')
     window.electron.ipcRenderer.sendSync('exec-command', {
       command: 'cd ../',
       cwd: tab.path,
@@ -84,40 +82,20 @@ function Tab() {
 
   const cleanup = () => {
     setCommand('')
-    setls('')
-    xtermRef.current.terminal.write('\x1bc')
-  }
-
-  const openFolder = (name) => {
-    setCommand(`cd ${name}`)
-    window.electron.ipcRenderer.sendSync('exec-command', {
-      command: `cd ${name}`,
-      cwd: tab.path,
-    })
+    xtermRef.current.terminal.writeUtf8('\x1bc')
   }
 
   return (
     <div className="p-4 pt-3">
       <Toolbar />
       <TabNav tabs={tabs} tabName={tab.name} />
-      <WavePanel packageJSON={packageJSON}>
+      <WavePanel>
         <span className="text-xs">
           <h3>index: {id}</h3>
           <div className="whitespace-pre mt-2">
             {JSON.stringify(tab, null, 2)}
           </div>
         </span>
-        {/* <div className="bg-gray-900 text-white">
-          <h3>Edit Name</h3>
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              className="text-gray-800 p-2"
-              value={tabName}
-              onChange={onChange}
-            />
-          </form>
-        </div> */}
       </WavePanel>
       <CommandLine
         path={path}
@@ -137,14 +115,6 @@ function Tab() {
             }}
           />
         )}
-        {ls && (
-          <FolderViewer
-            ls={ls}
-            openFolder={(name) => {
-              openFolder(name)
-            }}
-          />
-        )}
         <XTerm
           className="terminal"
           ref={xtermRef}
@@ -153,9 +123,8 @@ function Tab() {
             theme: {
               background: '#1e1f29',
             },
-            // fontFamily: `'Fira Mono', monospace`,
-            fontSize: 14,
-            fontWeight: 900,
+            fontSize: 13,
+            fontWeight: 700,
           }}
           addons={[fitAddon]}
         />

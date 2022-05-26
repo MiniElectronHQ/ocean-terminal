@@ -8,7 +8,6 @@ function Home() {
   const [tabs, setTabs] = useState([])
 
   useEffect(() => {
-    console.log(window.electron)
     setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
   }, [])
 
