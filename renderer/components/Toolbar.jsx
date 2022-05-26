@@ -17,10 +17,10 @@ const Toolbar = ({}) => {
   return (
     <div id="toolbar">
       <div className="flex items-center justify-between">
-        <div className="p-2 flex items-center space-x-3">
+        <div className="px-2 py-1 flex items-center space-x-3">
           <div>
             <button
-              className="flex items-center space-x-1 text-sm font-bold"
+              className="flex items-center space-x-1 px-1 text-sm font-bold"
               onClick={() => {
                 setVisible(!visible)
               }}

@@ -60,7 +60,7 @@ body {
 
 #toolbar {
   background: #1e1f29;
-  border-bottom: 1px solid #242530;
+  border-bottom: 1px solid #1e1f29;
   position: fixed;
   top: 0;
   left: 0;
@@ -74,7 +74,7 @@ body {
 
 #tablist {
   background: #1e1f29;
-  border-top: 1px solid #14151a;
+  /* border-top: 1px solid #14151a; */
   border-bottom: 1px solid #30333f;
   position: fixed;
   top: 41px;
