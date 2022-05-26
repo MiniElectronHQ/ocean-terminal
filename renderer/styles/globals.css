@@ -101,8 +101,8 @@ body {
 #infoPanel {
   background: #1e1f29;
   border-left: 1px solid #30333f;
-  top: 79px;
-  height: calc(100vh - 79px);
+  top: 78px;
+  height: calc(100vh - 78px);
   width: 200px;
   position: fixed;
   right: 0;
