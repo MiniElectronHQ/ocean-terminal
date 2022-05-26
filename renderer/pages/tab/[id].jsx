@@ -94,17 +94,31 @@ function Tab() {
     }, 50)
   }
 
+  const openFolder = (item) => {
+    setCommand(`cd ${item}`)
+    xtermRef.current.terminal.writeUtf8('\x1bc')
+    window.electron.ipcRenderer.send('spawn-command', {
+      command: `cd ${item}`,
+      cwd: tab.path,
+    })
+    updatePath()
+  }
+
   return (
     <div className="p-4 pt-3">
       <Toolbar />
       <TabNav tabs={tabs} tabName={tab.name} />
-      <WavePanel>
-        <span className="text-xs">
-          <h3>index: {id}</h3>
+      <WavePanel
+        openFolder={(item) => {
+          openFolder(item)
+        }}
+      >
+        {/* <span className="text-xs">
+          <h3>index: {id}</h3> 
           <div className="whitespace-pre mt-2">
             {JSON.stringify(tab, null, 2)}
           </div>
-        </span>
+        </span> */}
       </WavePanel>
       <CommandLine
         path={path}

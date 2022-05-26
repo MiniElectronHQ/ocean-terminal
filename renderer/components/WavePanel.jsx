@@ -1,7 +1,8 @@
 import { MdMicrowave } from 'react-icons/md'
 import { FiFileText } from 'react-icons/fi'
+import FolderViewer from './FolderViewer'
 
-const WavePanel = ({ packageJSON, children }) => {
+const WavePanel = ({ openFolder, packageJSON, children }) => {
   return (
     <div id="infoPanel">
       <h1
@@ -11,6 +12,14 @@ const WavePanel = ({ packageJSON, children }) => {
         <span>Wave Panel</span>
         <MdMicrowave className="text-sm" />
       </h1>
+
+      <div className="p-2">
+        <FolderViewer
+          openFolder={(item) => {
+            openFolder(item)
+          }}
+        />
+      </div>
       <div className="p-2">{children}</div>
       {packageJSON && (
         <div className="p-2 border-l-4 border-dracula-gray">
