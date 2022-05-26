@@ -14,7 +14,6 @@ function Tab() {
   const router = useRouter()
   const { id } = router.query
 
-  const [tabName, setTabName] = useState('')
   const [tabs, setTabs] = useState([])
   const [tab, setTab] = useState({})
 
@@ -31,13 +30,14 @@ function Tab() {
     setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
     const response = window.electron.ipcRenderer.sendSync('get-tab', id)
     setTab(response)
-    setTabName(response.name)
     setCommand(response.command)
     setPath(response.path)
     setPackageJSON(response.packageJSON)
     setls(response.ls)
     setOutput(response.output)
-  }, [])
+    xtermRef.current.terminal.writeUtf8('\x1bc')
+    xtermRef.current.terminal.write(response.output)
+  }, [id])
 
   useEffect(() => {
     let testTerm = xtermRef.current.terminal
@@ -55,25 +55,11 @@ function Tab() {
     })
   }, [])
 
-  const onChange = (e) => {
-    tab.name = e.target.value
-    setTabName(e.target.value)
-  }
-
-  const onSubmit = (e) => {
-    e.preventDefault()
-
-    window.electron.ipcRenderer.send('edit-tab', { id, tab })
-    setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
-  }
-
   const submitCommand = (event) => {
     setls('')
     const command = event.target.value
     setCommand(command)
     tab.command = command
-
-    // send('run-kill-process')
 
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,
@@ -97,7 +83,6 @@ function Tab() {
   }
 
   const cleanup = () => {
-    // send('run-kill-process')
     setCommand('')
     setls('')
     xtermRef.current.terminal.write('\x1bc')
