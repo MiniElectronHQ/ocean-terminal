@@ -4,14 +4,6 @@ import spawn from './commands/spawn'
 import ipcTabs from './ipc/tabs'
 import ipcTerminal from './ipc/terminal'
 import ipcApp from './ipc/app'
-import ipcDefaultData from './ipc/default-data'
+import defaultData from './default-data'
 
-export {
-  createWindow,
-  exec,
-  spawn,
-  ipcTabs,
-  ipcTerminal,
-  ipcApp,
-  ipcDefaultData,
-}
+export { createWindow, exec, spawn, ipcTabs, ipcTerminal, ipcApp, defaultData }

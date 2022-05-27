@@ -7,6 +7,7 @@ import CommandLine from '../../components/CommandLine'
 import TerminalToolbar from '../../components/TerminalToolbar'
 import XTerm from '../../components/XTerm'
 import { FitAddon } from 'xterm-addon-fit'
+import classNames from 'classnames'
 
 function Tab() {
   const router = useRouter()
@@ -16,6 +17,7 @@ function Tab() {
   const [tab, setTab] = useState({})
   const [command, setCommand] = useState('')
   const [path, setPath] = useState('')
+  const [interactive, setInteractive] = useState('')
 
   const xtermRef = useRef(null)
   const fitAddon = new FitAddon()
@@ -35,6 +37,8 @@ function Tab() {
     let testTerm = xtermRef.current.terminal
     let testFitAddon = fitAddon
 
+    xtermRef.current.terminal.focus()
+
     window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
       if (result !== '\u001b[H\u001b[2J\u001b[3J') {
         testTerm.writeUtf8(`${result}\n`)
@@ -46,7 +50,7 @@ function Tab() {
       const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
       const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
       currentTab.output = result
-      window.electron.ipcRenderer.sendSync('edit-tab', {
+      window.electron.ipcRenderer.send('edit-tab', {
         id,
         tab: currentTab,
       })
@@ -130,6 +134,10 @@ function Tab() {
     updatePath()
   }
 
+  const setInteractiveMode = () => {
+    setInteractive(!interactive)
+  }
+
   return (
     <div className="p-4 pt-3">
       <Toolbar />
@@ -155,12 +163,21 @@ function Tab() {
           submitCommand(event)
         }}
       />
-      <div id="terminalWrapper" className="relative">
+      <div
+        id="terminalWrapper"
+        className={classNames('relative', {
+          'interactive-mode': interactive,
+        })}
+      >
         {command && (
           <TerminalToolbar
             command={command}
+            interactive={interactive}
             cleanup={() => {
               cleanup()
+            }}
+            setInteractiveMode={() => {
+              setInteractiveMode()
             }}
           />
         )}

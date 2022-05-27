@@ -124,7 +124,8 @@ body {
   color: #f1fa8c !important;
 }
 
-.isInteractive .xterm .xterm-helper-textarea {
+.interactive-mode .xterm .xterm-cursor-layer,
+.interactive-mode .xterm .xterm-helper-textarea {
   display: block !important;
 }
 

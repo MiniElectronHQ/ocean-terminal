@@ -25,6 +25,17 @@ const ipcTerminal = (store, ipcMain) => {
     store.set('sudo-password', password)
   })
 
+  ipcMain.on('check-child-process', async (event, id) => {
+    const pids = store.get('pids')
+    const pid = pids.find((pid) => pid.id === id).pid
+    try {
+      process.kill(pid, 0)
+      return true
+    } catch (e) {
+      return false
+    }
+  })
+
   ipcMain.on('cleanup', async (event, id) => {
     const allPids = store.get('pids')
     const tabPids = allPids.filter((pid) => pid.id === id)

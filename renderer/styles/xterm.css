@@ -58,8 +58,12 @@
   z-index: 5;
 }
 
+.xterm-cursor-layer {
+  display: none !important;
+}
+
 .xterm .xterm-helper-textarea {
-  display: none;
+  display: none !important;
   padding: 0;
   border: 0;
   margin: 0;

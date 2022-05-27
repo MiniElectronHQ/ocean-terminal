@@ -3,7 +3,7 @@ import serve from 'electron-serve'
 import Store from 'electron-store'
 import {
   createWindow,
-  ipcDefaultData,
+  defaultData,
   ipcTabs,
   ipcApp,
   ipcTerminal,
@@ -43,7 +43,7 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-ipcDefaultData(store)
+defaultData(store)
 ipcTabs(store, ipcMain)
 ipcTerminal(store, ipcMain)
 ipcApp(store, ipcMain, app)

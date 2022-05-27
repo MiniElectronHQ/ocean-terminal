@@ -1,6 +1,6 @@
-import { exec } from '../../helpers'
+import { exec } from './index'
 
-const ipcDefaultData = (store) => {
+const DefaultData = (store) => {
   ;(async () => {
     store.set('username', await exec('whoami'))
     store.set('hostname', await exec('hostname'))
@@ -19,4 +19,4 @@ const ipcDefaultData = (store) => {
   }
 }
 
-export default ipcDefaultData
+export default DefaultData

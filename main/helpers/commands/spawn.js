@@ -17,6 +17,8 @@ const spawnCommand = async (event, command, cwd, store, id) => {
       detached: true,
     })
 
+    console.log(child.pid)
+
     store.set('pids', [...store.get('pids'), { id: id, pid: child.pid }])
 
     child.stdout.on('data', (data) => {
