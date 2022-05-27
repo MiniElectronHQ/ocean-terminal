@@ -54,6 +54,7 @@ a:not([draggable='true']),
 img:not([draggable='true']) {
   -webkit-user-drag: none;
   user-drag: none;
+  cursor: default;
 }
 a[href^="http://"],
 a[href^="https://"],
@@ -61,6 +62,10 @@ a[href^="ftp://"]
 {
   -webkit-user-drag: auto;
   user-drag: auto;
+  cursor: default;
+}
+a {
+  cursor: default;
 }
 
 body {

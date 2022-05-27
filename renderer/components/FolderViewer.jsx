@@ -72,6 +72,12 @@ const FolderViewer = ({ tab, openFolder, folderUp }) => {
               <span>../</span>
             </button>
 
+            {tab.wave.folders.length === 0 && tab.wave.files.length === 0 && (
+              <div className="text-xs text-nosferatu-700 font-medium mt-2">
+                Nothing in this folder...
+              </div>
+            )}
+
             {tab.wave.folders.map((item) => {
               return (
                 item !== '' && (
