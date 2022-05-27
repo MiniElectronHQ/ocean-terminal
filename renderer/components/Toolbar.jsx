@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { VscCircleLargeFilled } from 'react-icons/vsc'
+import Link from 'next/link'
+import { HiOutlineCog, HiOutlineHome } from 'react-icons/hi'
 
 const Toolbar = ({}) => {
   const [username, setUsername] = useState('username')
@@ -15,7 +17,7 @@ const Toolbar = ({}) => {
     <div id="toolbar">
       <div className="flex items-center justify-between px-2">
         <div className="font-bold">
-          <span className="text-dracula-cyan ml-1">
+          <span className="text-dracula-cyan">
             {username}
             <span className="text-dracula-gray">@</span>
             {hostname}
@@ -25,19 +27,31 @@ const Toolbar = ({}) => {
           ocean
           <span className="text-dracula-cyan">~</span>terminal
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            window.electron.ipcRenderer.sendSync('close-app')
-          }}
-          className="cursor-pointer"
-          style={{
-            color: '#e2595d',
-            zIndex: '9999999',
-          }}
-        >
-          <VscCircleLargeFilled />
-        </button>
+        <div className="flex items-center">
+          <Link href="/home">
+            <div className="hover:bg-darker-900 p-1 px-1.5 rounded">
+              <HiOutlineHome className="text-dracula-gray" />
+            </div>
+          </Link>
+          <Link href="/settings">
+            <div className="hover:bg-darker-900 p-1 px-1.5 mr-3 rounded">
+              <HiOutlineCog className="text-dracula-gray" />
+            </div>
+          </Link>
+          <button
+            type="button"
+            onClick={() => {
+              window.electron.ipcRenderer.sendSync('close-app')
+            }}
+            className="cursor-pointer"
+            style={{
+              color: '#e2595d',
+              zIndex: '9999999',
+            }}
+          >
+            <VscCircleLargeFilled />
+          </button>
+        </div>
       </div>
     </div>
   )

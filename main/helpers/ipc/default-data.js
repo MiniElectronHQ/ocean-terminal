@@ -8,6 +8,7 @@ const ipcDefaultData = (store) => {
 
   store.set('tabs', [])
   store.set('pids', [])
+  store.set('sudo-password', '')
 }
 
 export default ipcDefaultData

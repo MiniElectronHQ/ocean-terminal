@@ -124,6 +124,26 @@ body {
   color: #f1fa8c !important;
 }
 
+#home {
+  background: url('/images/home.jpg') no-repeat;
+
+  background-size: cover;
+}
+
+#homeWrapper {
+  background: #14151bdd;
+}
+
+#settings {
+  background: url('/images/settings.jpg') no-repeat;
+
+  background-size: cover;
+}
+
+#settingsWrapper {
+  background: #14151bdd;
+}
+
 #toolbar {
   background: #1e1f29;
   border-bottom: 1px solid #1e1f29;

@@ -17,6 +17,14 @@ const ipcTerminal = (store, ipcMain) => {
     await spawn(event, args.command, args.cwd, store, args.id)
   })
 
+  ipcMain.on('get-sudo-password', async (event, password) => {
+    event.returnValue = store.get('sudo-password')
+  })
+
+  ipcMain.on('save-sudo-password', async (event, password) => {
+    store.set('sudo-password', password)
+  })
+
   ipcMain.on('cleanup', async (event, id) => {
     const allPids = store.get('pids')
     const tabPids = allPids.filter((pid) => pid.id === id)
