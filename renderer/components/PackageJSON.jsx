@@ -31,7 +31,7 @@ const PackageJSX = ({ tab, packageJSON }) => {
               <ul>
                 {Object.keys(packageJSON.dependencies).map((dependency) => (
                   <li
-                    className="flex text-xs items-center justify-between  hover:underline hover:text-white text-dracula-light-gray"
+                    className="flex text-xs items-center justify-between cursor-pointer hover:underline hover:text-white text-dracula-light-gray"
                     onClick={() => {
                       window.electron.shell.openExternal(
                         `https://www.npmjs.com/package/${dependency}`
@@ -53,7 +53,7 @@ const PackageJSX = ({ tab, packageJSON }) => {
               <ul>
                 {Object.keys(packageJSON.devDependencies).map((dependency) => (
                   <li
-                    className="flex text-xs items-center justify-between  hover:underline hover:text-white text-dracula-light-gray"
+                    className="flex text-xs items-center justify-between cursor-pointer hover:underline hover:text-white text-dracula-light-gray"
                     onClick={() => {
                       window.electron.shell.openExternal(
                         `https://www.npmjs.com/package/${dependency}`

@@ -20,7 +20,7 @@ const execCommand = async (command, cwd, store) => {
     }
 
     if (command.split(' ')[0] === 'cd') {
-      await changeDirectory(command, store)
+      return await changeDirectory(command, store)
     }
 
     return result.trim()

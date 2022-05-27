@@ -28,6 +28,13 @@ const ipcTabs = (store, ipcMain) => {
     store.set('tabs', tabs)
   })
 
+  ipcMain.on('delete-tab', (event, id) => {
+    const tabs = store.get('tabs') || []
+    tabs.splice(id, 1)
+    store.set('tabs', tabs)
+    event.returnValue = tabs
+  })
+
   ipcMain.on('set-current-tab-id', (event, id) => {
     store.set('current-tab-id', id)
   })

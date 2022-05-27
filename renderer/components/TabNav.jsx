@@ -27,6 +27,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
   }
 
   const newTab = () => {
+    const index = tabs.length
     const homePath = `/home/${
       window.electron.ipcRenderer.sendSync('get-username-hostname')['username']
     }`
@@ -48,7 +49,18 @@ const TabNav = ({ tabs, setTabs, tab }) => {
     newTab.name = `Tab #${tabs.length + 1}`
     tabs.push(newTab)
     window.electron.ipcRenderer.send('save-tabs', tabs)
-    router.push('/tab/' + (tabs.length - 1))
+    router.push('/tab/' + index)
+    window.electron.ipcRenderer.send('set-current-tab-id', index)
+    const newTabs = window.electron.ipcRenderer.sendSync('exec-command', {
+      command: 'cd .',
+      cwd: homePath,
+    })
+    setTabs(newTabs)
+  }
+
+  const deleteTab = () => {
+    const newTabs = window.electron.ipcRenderer.sendSync('delete-tab', id)
+    setTabs(newTabs)
   }
 
   return (
@@ -63,7 +75,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
             return (
               <div key={index} className="inline-block relative">
                 <span
-                  className="tab tab-active "
+                  className="tab tab-active cursor-pointer"
                   onClick={() => {
                     setVisible(!visible)
                   }}
@@ -84,6 +96,15 @@ const TabNav = ({ tabs, setTabs, tab }) => {
                         onChange={onChange}
                       />
                     </form>
+                    {tabs.length > 1 && (
+                      <button
+                        onClick={() => {
+                          deleteTab()
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

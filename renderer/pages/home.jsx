@@ -14,7 +14,12 @@ function Home() {
   return (
     <div>
       <Toolbar />
-      <TabNav tabs={tabs} />
+      <TabNav
+        tabs={tabs}
+        setTabs={(data) => {
+          setTabs(data)
+        }}
+      />
       <WavePanel />
       <div
         className="flex items-center justify-center w-full h-screen text-center"

@@ -19,6 +19,7 @@ const changeDirectory = async (command, store) => {
   }
   tabs[id].path = cleanPath
   store.set('tabs', tabs)
+  return tabs
 }
 
 export default changeDirectory

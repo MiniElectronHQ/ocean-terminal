@@ -6,23 +6,7 @@ const ipcDefaultData = (store) => {
     store.set('hostname', await exec('hostname'))
   })()
 
-  store.set('tabs', [
-    {
-      name: 'Tab #1',
-      path: `/home/${store.get('username')}`,
-      command: '',
-      output: '',
-      wave: {
-        folders: [],
-        files: [],
-        dev: {
-          package_json: '',
-          git: '',
-          readme: '',
-        },
-      },
-    },
-  ])
+  store.set('tabs', [])
 }
 
 export default ipcDefaultData

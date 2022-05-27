@@ -77,7 +77,7 @@ const FolderViewer = ({ tab, openFolder, folderUp }) => {
                 item !== '' && (
                   <div
                     key={item}
-                    className="flex items-center justify-left p-1 text-xs text-gray-300 hover:text-white hover-bg-dracula-semidark rounded "
+                    className="flex items-center justify-left p-1 text-xs text-gray-300 hover:text-white hover-bg-dracula-semidark rounded cursor-pointer"
                     onClick={() => {
                       openFolder(item)
                     }}
