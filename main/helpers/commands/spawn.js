@@ -11,11 +11,22 @@ const spawnCommand = async (event, command, cwd, store, id) => {
       startCommand = 'sudo -S ' + startCommand.replace('sudo ', '')
     }
 
-    const child = spawn(startCommand, args, {
+    let child = spawn(startCommand, args, {
       cwd: cwd,
       shell: true,
       detached: true,
     })
+
+    const child_processes = store.get('child_processes')
+
+    if (child_processes[id] !== undefined) {
+      console.log('found child', child_processes[id])
+      child = child_processes[id]
+    } else {
+      console.log('not found child', child)
+      child_processes.push(child)
+      store.set('child_processes', child_processes)
+    }
 
     console.log(child.pid)
 
@@ -27,7 +38,9 @@ const spawnCommand = async (event, command, cwd, store, id) => {
     })
 
     child.stderr.on('data', function (data) {
-      child.stdin.write(store.get('sudo-password') + '\n')
+      if (command.includes('sudo -S')) {
+        child.stdin.write(store.get('sudo-password') + '\n')
+      }
     })
 
     if (command.split(' ')[0] === 'cd') {

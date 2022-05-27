@@ -60,7 +60,18 @@ function Tab() {
       xtermRef.current.terminal.write(e.key)
       if (e.key == '\r') {
         // TODO: on enter: send command to backend to response
-        xtermRef.current.terminal.write('\n')
+        // window.electron.ipcRenderer.send('response-to-child-process', {
+        //   id: id,
+        //   command: '3000',
+        // })
+
+        const result = window.electron.ipcRenderer.send('exec-command-reply', {
+          command: '3000',
+          id: id,
+          cwd: tab.path,
+        })
+        console.log(result)
+        xtermRef.current.terminal.write('\n send response to backend')
       } else if (e.key == '\x7F') {
         // TODO: make act like real backspace
         xtermRef.current.terminal.write('\x1b[D')

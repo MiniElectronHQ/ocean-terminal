@@ -17,6 +17,8 @@ const DefaultData = (store) => {
   if (!store.get('pids')) {
     store.set('pids', [])
   }
+
+  store.set('child_processes', [])
 }
 
 export default DefaultData

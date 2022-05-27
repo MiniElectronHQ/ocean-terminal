@@ -13,8 +13,20 @@ const ipcTerminal = (store, ipcMain) => {
     event.returnValue = result
   })
 
+  ipcMain.on('exec-command-reply', async (event, args) => {
+    const pids = store.get('pids')
+    const pid = pids.find((pid) => pid.id === args.id).pid
+    console.log(`echo "${args.command}" > /proc/${pid}/fd/0`)
+    const result = await exec(
+      `echo "${args.command}" > /proc/${pid}/fd/0`,
+      args.cwd,
+      store
+    )
+    event.returnValue = result
+  })
+
   ipcMain.on('spawn-command', async (event, args) => {
-    await spawn(event, args.command, args.cwd, store, args.id)
+    await spawn(event, args.command, args.cwd, store, args.id, ipcMain)
   })
 
   ipcMain.on('get-sudo-password', async (event, password) => {
@@ -23,6 +35,18 @@ const ipcTerminal = (store, ipcMain) => {
 
   ipcMain.on('save-sudo-password', async (event, password) => {
     store.set('sudo-password', password)
+  })
+
+  ipcMain.on('response-to-child-process', async (event, args) => {
+    // const pids = store.get('pids')
+    // const pid = pids.find((pid) => pid.id === args.id).pid
+    const child_processes = store.get('child_processes')
+    const child = child_processes[args.id]
+    process.stdin.pipe(child.stdin)
+    if (child.stdio) {
+      child.stdin.write(args.command + '\n')
+    }
+    console.log('hey hey hye', child_processes)
   })
 
   ipcMain.on('check-child-process', async (event, id) => {
