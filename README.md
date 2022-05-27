@@ -2,7 +2,7 @@
 
 Made for terminal newbies.
 
-<img src="/screenshot-v0.0.3.png" alt="Ocean Terminal" />
+<img src="/screenshot.png" alt="Ocean Terminal" />
 
 ## Starting Development
 
