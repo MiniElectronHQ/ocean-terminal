@@ -7,7 +7,6 @@ export default class Xterm extends React.Component {
 
     React.RefObject = React.createRef()
 
-    // Bind Methods
     this.onData = this.onData.bind(this)
     this.onCursorMove = this.onCursorMove.bind(this)
     this.onKey = this.onKey.bind(this)
