@@ -46,7 +46,7 @@ function Tab() {
 
       const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
       const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
-      currentTab.output = currentTab.output + result
+      currentTab.output = result
       window.electron.ipcRenderer.sendSync('edit-tab', {
         id,
         tab: currentTab,
