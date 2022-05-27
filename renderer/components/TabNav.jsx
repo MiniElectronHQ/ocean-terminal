@@ -63,7 +63,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
             return (
               <div key={index} className="inline-block relative">
                 <span
-                  className="tab tab-active cursor-pointer"
+                  className="tab tab-active "
                   onClick={() => {
                     setVisible(!visible)
                   }}

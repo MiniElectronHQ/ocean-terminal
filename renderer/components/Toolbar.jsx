@@ -28,7 +28,7 @@ const Toolbar = ({}) => {
           onClick={() => {
             window.electron.ipcRenderer.sendSync('close-app')
           }}
-          className="cursor-pointer mr-2"
+          className=" mr-2"
           style={{
             color: '#e2595d',
             zIndex: '9999999',
