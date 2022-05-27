@@ -17,6 +17,7 @@ const changeDirectory = async (command, store) => {
   } else {
     tabs[id].wave.folders = []
   }
+  tabs[id].output = ''
   tabs[id].path = cleanPath
   store.set('tabs', tabs)
   return tabs

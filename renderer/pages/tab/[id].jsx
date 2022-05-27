@@ -63,6 +63,7 @@ function Tab() {
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,
       cwd: tab.path,
+      id: id,
     })
     if (command.split(' ')[0] === 'cd') {
       updatePath()
@@ -75,7 +76,7 @@ function Tab() {
   const folderUp = () => {
     setCommand('cd ../')
     xtermRef.current.terminal.writeUtf8('\x1bc')
-    window.electron.ipcRenderer.send('spawn-command', {
+    window.electron.ipcRenderer.send('exec-command', {
       command: 'cd ../',
       cwd: tab.path,
     })
@@ -85,6 +86,7 @@ function Tab() {
   const cleanup = () => {
     setCommand('')
     xtermRef.current.terminal.writeUtf8('\x1bc')
+    window.electron.ipcRenderer.send('cleanup', id)
   }
 
   const updatePath = () => {
@@ -109,7 +111,7 @@ function Tab() {
   const openFolder = (item) => {
     setCommand(`cd "${item.replace('/', '')}"`)
     xtermRef.current.terminal.writeUtf8('\x1bc')
-    window.electron.ipcRenderer.send('spawn-command', {
+    window.electron.ipcRenderer.send('exec-command', {
       command: `cd ${item}`,
       cwd: tab.path,
     })

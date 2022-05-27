@@ -7,6 +7,7 @@ const ipcDefaultData = (store) => {
   })()
 
   store.set('tabs', [])
+  store.set('pids', [])
 }
 
 export default ipcDefaultData

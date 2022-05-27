@@ -1,7 +1,7 @@
 const spawn = require('child_process').spawn
 import changeDirectory from './change-directory'
 
-const spawnCommand = async (event, command, cwd, store) => {
+const spawnCommand = async (event, command, cwd, store, id) => {
   let result
   try {
     const startCommand = command.split(' ')[0]
@@ -11,6 +11,8 @@ const spawnCommand = async (event, command, cwd, store) => {
       shell: true,
       detached: true,
     })
+
+    store.set('pids', [...store.get('pids'), { id: id, pid: child.pid }])
 
     child.stdout.on('data', (data) => {
       result = data.toString()

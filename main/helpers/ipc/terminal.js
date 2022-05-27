@@ -14,7 +14,19 @@ const ipcTerminal = (store, ipcMain) => {
   })
 
   ipcMain.on('spawn-command', async (event, args) => {
-    await spawn(event, args.command, args.cwd, store)
+    await spawn(event, args.command, args.cwd, store, args.id)
+  })
+
+  ipcMain.on('cleanup', async (event, id) => {
+    const allPids = store.get('pids')
+    const tabPids = allPids.filter((pid) => pid.id === id)
+    const newPids = allPids.filter((pid) => pid.id !== id)
+    tabPids.forEach((child) => {
+      try {
+        process.kill(-child.pid)
+      } catch (e) {}
+    })
+    store.set('pids', newPids)
   })
 }
 
