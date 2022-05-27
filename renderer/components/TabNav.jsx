@@ -79,7 +79,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
                     setVisible(!visible)
                   }}
                 >
-                  {tabName}
+                  {tab.name}
                 </span>
                 {visible && (
                   <div

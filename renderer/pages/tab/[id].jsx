@@ -6,7 +6,6 @@ import WavePanel from '../../components/WavePanel'
 import CommandLine from '../../components/CommandLine'
 import TerminalToolbar from '../../components/TerminalToolbar'
 import XTerm from '../../components/XTerm'
-
 import { FitAddon } from 'xterm-addon-fit'
 
 function Tab() {
@@ -52,6 +51,17 @@ function Tab() {
         tab: currentTab,
       })
     })
+
+    xtermRef.current.terminal.onKey((e) => {
+      xtermRef.current.terminal.write(e.key)
+      if (e.key == '\r') {
+        // TODO: on enter: send command to backend to response
+        xtermRef.current.terminal.write('\n')
+      } else if (e.key == '\x7F') {
+        // TODO: make act like real backspace
+        xtermRef.current.terminal.write('\x1b[D')
+      }
+    })
   }, [])
 
   const submitCommand = (event) => {
@@ -59,6 +69,8 @@ function Tab() {
     setCommand(command)
     tab.command = command
     tab.output = ''
+
+    window.electron.ipcRenderer.send('cleanup', id)
 
     window.electron.ipcRenderer.send('spawn-command', {
       command: command,

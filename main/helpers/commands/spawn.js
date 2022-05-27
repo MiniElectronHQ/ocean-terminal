@@ -25,7 +25,6 @@ const spawnCommand = async (event, command, cwd, store, id) => {
     })
 
     child.stderr.on('data', function (data) {
-      console.log(data.toString())
       child.stdin.write(store.get('sudo-password') + '\n')
     })
 

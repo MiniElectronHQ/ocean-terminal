@@ -124,6 +124,10 @@ body {
   color: #f1fa8c !important;
 }
 
+.isInteractive .xterm .xterm-helper-textarea {
+  display: block !important;
+}
+
 #home {
   background: url('/images/home.jpg') no-repeat;
 

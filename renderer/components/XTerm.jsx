@@ -70,7 +70,7 @@ export default class Xterm extends React.Component {
     if (this.props.onData) this.props.onData(data)
   }
 
-  onKey(key, domEvent) {
+  onKey(event) {
     if (this.props.onKey) this.props.onKey(event)
   }
 
@@ -86,11 +86,11 @@ export default class Xterm extends React.Component {
     if (this.props.onSelectionChange) this.props.onSelectionChange()
   }
 
-  onRender(start, end) {
+  onRender(event) {
     if (this.props.onRender) this.props.onRender(event)
   }
 
-  onResize(cols, rows) {
+  onResize(event) {
     if (this.props.onResize) this.props.onResize(event)
   }
 
