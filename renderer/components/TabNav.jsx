@@ -2,81 +2,111 @@ import { HiPlus } from 'react-icons/hi'
 import Link from 'next/link'
 import Classnames from 'classnames'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
-const TabNav = ({ tabs, tabName }) => {
+const TabNav = ({ tabs, setTabs, tab }) => {
   const router = useRouter()
+  const { id } = router.query
 
-  // const [tabName, setTabName] = useState('')
+  const [tabName, setTabName] = useState(null)
+  const [visible, setVisible] = useState(false)
 
-  // const onChange = (e) => {
-  //   tab.name = e.target.value
-  //   setTabName(e.target.value)
-  // }
+  useEffect(() => {
+    setTabName(tab?.name)
+    setVisible(false)
+  }, [tab, tabs])
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault()
+  const onChange = (e) => {
+    tab.name = e.target.value
+  }
 
-  //   window.electron.ipcRenderer.send('edit-tab', { id, tab })
-  //   setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
-  // }
+  const onSubmit = (e) => {
+    e.preventDefault()
+    window.electron.ipcRenderer.send('edit-tab', { id, tab })
+    setTabs(window.electron.ipcRenderer.sendSync('get-tabs'))
+  }
+
+  const newTab = () => {
+    const newTab = {
+      name: 'Tab #1',
+      path: `/home/${
+        window.electron.ipcRenderer.sendSync('get-username-hostname')[
+          'username'
+        ]
+      }`,
+      command: '',
+      output: '',
+      wave: {
+        folders: [],
+        files: [],
+        dev: {
+          package_json: '',
+          git: '',
+          readme: '',
+        },
+      },
+    }
+    newTab.name = `Tab #${tabs.length + 1}`
+    tabs.push(newTab)
+    window.electron.ipcRenderer.send('save-tabs', tabs)
+    router.push('/tab/' + (tabs.length - 1))
+  }
 
   return (
-    <div id="tablist" className="flex items-center text-sm">
-      <div>
-        {tabs.map((tab, index) => (
-          <Link href={'/tab/' + index} key={index}>
-            <a
-              className={Classnames('tab', {
-                'tab-active': tab.name === tabName,
-              })}
-            >
-              {tab.name}
-            </a>
-          </Link>
-        ))}
+    <div
+      id="tablist"
+      className="flex items-center text-sm"
+      style={{ zIndex: 9999999 }}
+    >
+      <div className="relative">
+        {tabs.map((tab, index) => {
+          if (index === parseInt(id)) {
+            return (
+              <div key={index} className="inline-block relative">
+                <span
+                  className="tab tab-active cursor-pointer"
+                  onClick={() => {
+                    setVisible(!visible)
+                  }}
+                >
+                  {tabName}
+                </span>
+                {visible && (
+                  <div
+                    className="bg-dracula-dark-gray text-white absolute left-0 p-3 rounded shadow-xl"
+                    style={{ top: '27px', zIndex: 9999999 }}
+                  >
+                    <form onSubmit={onSubmit}>
+                      <input
+                        placeholder="Tab Name"
+                        type="text"
+                        className="text-gray-300 p-2 bg-dracula-gray border border-dracula-gray rounded"
+                        defaultValue={tabName}
+                        onChange={onChange}
+                      />
+                    </form>
+                  </div>
+                )}
+              </div>
+            )
+          } else {
+            return (
+              <Link href={'/tab/' + index} key={index}>
+                <a className="tab">{tab.name}</a>
+              </Link>
+            )
+          }
+        })}
       </div>
       <div>
         <button
           className="tab text-base"
           onClick={() => {
-            const newTab = {
-              name: 'Tab #1',
-              path: `/home/${
-                window.electron.ipcRenderer.sendSync('get-username-hostname')[
-                  'username'
-                ]
-              }`,
-              command: '',
-              output: '',
-              wave: {
-                folders: [],
-                files: [],
-                dev: {
-                  package_json: '',
-                  git: '',
-                  readme: '',
-                },
-              },
-            }
-            newTab.name = `Tab #${tabs.length + 1}`
-            tabs.push(newTab)
-            window.electron.ipcRenderer.send('save-tabs', tabs)
-            router.push('/tab/' + (tabs.length - 1))
+            newTab()
           }}
         >
           <HiPlus />
         </button>
-        {/* <div className="bg-gray-900 text-white">
-          <h3>Edit Name</h3>
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              className="text-gray-800 p-2"
-              value={tabName}
-              onChange={onChange}
-            />
-          </form>
-        </div> */}
       </div>
     </div>
   )

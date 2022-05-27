@@ -119,20 +119,19 @@ function Tab() {
   return (
     <div className="p-4 pt-3">
       <Toolbar />
-      <TabNav tabs={tabs} tabName={tab.name} />
+      <TabNav
+        tabs={tabs}
+        setTabs={(data) => {
+          setTabs(data)
+        }}
+        tab={tab}
+      />
       <WavePanel
         tab={tab}
         openFolder={(item) => {
           openFolder(item)
         }}
-      >
-        {/* <span className="text-xs">
-          <h3>index: {id}</h3>
-          <div className="whitespace-pre mt-2">
-            {JSON.stringify(tab, null, 2)}
-          </div>
-        </span> */}
-      </WavePanel>
+      />
       <CommandLine
         path={path}
         submitCommand={(event) => {
