@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: InterRegular;
+  src: url(./fonts/Inter-Regular.otf);
+}
+
+@font-face {
+  font-family: InterBold;
+  src: url(./fonts/Inter-Bold.otf);
+}
+
+@font-face {
+  font-family: InterMedium;
+  src: url(./fonts/Inter-Medium.otf);
+}
+
+@font-face {
+  font-family: FiraCode;
+  src: url(./fonts/FiraCode-Retina.ttf);
+}
+
+.font-bold,
+.font-800,
+.font-900 {
+  font-family: InterBold;
+}
+
+.font-medium,
+.font-700,
+.font-600 {
+  font-family: InterMedium;
+}
+
 /* disable selection */
 :not(input):not(textarea),
 :not(input):not(textarea)::after,
@@ -32,9 +64,9 @@ a[href^="ftp://"]
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: InterRegular, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Inter', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #282a36;

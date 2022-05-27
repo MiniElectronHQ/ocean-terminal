@@ -158,7 +158,8 @@ function Tab() {
             theme: {
               background: '#1e1f29',
             },
-            fontSize: 13,
+            fontFamily: 'FiraCode, monospace',
+            fontSize: 12,
             fontWeight: 700,
           }}
           addons={[fitAddon]}

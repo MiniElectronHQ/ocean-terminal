@@ -13,22 +13,24 @@ const Toolbar = ({}) => {
 
   return (
     <div id="toolbar">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-2">
+        <div className="font-bold">
+          <span className="text-dracula-cyan ml-1">
+            {username}
+            <span className="text-dracula-gray">@</span>
+            {hostname}
+          </span>
+        </div>
         <div className="can-drag p-2 flex-1 text-center font-bold">
           ocean
-          <span className="text-dracula-cyan">::</span>terminal{'  '}
-          <span className="text-dracula-cyan ml-1">
-            [{username}
-            <span className="text-dracula-gray">@</span>
-            {hostname}]
-          </span>
+          <span className="text-dracula-cyan">~</span>terminal
         </div>
         <button
           type="button"
           onClick={() => {
             window.electron.ipcRenderer.sendSync('close-app')
           }}
-          className="cursor-pointer mr-2"
+          className="cursor-pointer"
           style={{
             color: '#e2595d',
             zIndex: '9999999',
