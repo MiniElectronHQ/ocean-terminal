@@ -5,9 +5,9 @@ import TabNav from '../../components/TabNav'
 import WavePanel from '../../components/WavePanel'
 import CommandLine from '../../components/CommandLine'
 import TerminalToolbar from '../../components/TerminalToolbar'
-import { XTerm } from 'xterm-for-react'
+import XTerm from '../../components/XTerm'
+
 import { FitAddon } from 'xterm-addon-fit'
-import _ from 'lodash'
 
 function Tab() {
   const router = useRouter()

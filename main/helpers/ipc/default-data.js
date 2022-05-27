@@ -6,9 +6,17 @@ const ipcDefaultData = (store) => {
     store.set('hostname', await exec('hostname'))
   })()
 
-  store.set('tabs', [])
-  store.set('pids', [])
-  store.set('sudo-password', '')
+  if (!store.get('tabs')) {
+    store.set('tabs', [])
+  }
+
+  if (!store.get('sudo-password')) {
+    store.set('sudo-password', [])
+  }
+
+  if (!store.get('pids')) {
+    store.set('pids', [])
+  }
 }
 
 export default ipcDefaultData
