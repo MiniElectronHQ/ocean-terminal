@@ -2,7 +2,7 @@
 
 A highly opinionated take on a terminal emulator. Made in ElectronJS.
 
-Mostly made as a prototype for a few concepts that I think are pretty useful, such as:
+Mostly just a prototype to introduce a few concepts that I think are pretty useful, such as:
 
 - File browser
 - Command line output window
