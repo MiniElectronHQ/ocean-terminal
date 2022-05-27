@@ -46,6 +46,8 @@ const FolderViewer = ({ tab, openFolder, folderUp }) => {
       case 'jpg':
       case 'webp':
       case 'jpeg':
+      case 'gif':
+      case 'svg':
         return <BiImageAlt className={className} style={{ color: '#42a5f5' }} />
 
       default:
