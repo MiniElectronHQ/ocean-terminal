@@ -107,7 +107,7 @@ function Tab() {
   }
 
   const openFolder = (item) => {
-    setCommand(`cd ${item}`)
+    setCommand(`cd "${item.replace('/', '')}"`)
     xtermRef.current.terminal.writeUtf8('\x1bc')
     window.electron.ipcRenderer.send('spawn-command', {
       command: `cd ${item}`,
@@ -131,6 +131,9 @@ function Tab() {
         openFolder={(item) => {
           openFolder(item)
         }}
+        folderUp={() => {
+          folderUp()
+        }}
       />
       <CommandLine
         path={path}
@@ -142,9 +145,6 @@ function Tab() {
         {command && (
           <TerminalToolbar
             command={command}
-            folderUp={() => {
-              folderUp()
-            }}
             cleanup={() => {
               cleanup()
             }}

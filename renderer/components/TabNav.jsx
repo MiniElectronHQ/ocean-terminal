@@ -27,13 +27,12 @@ const TabNav = ({ tabs, setTabs, tab }) => {
   }
 
   const newTab = () => {
+    const homePath = `/home/${
+      window.electron.ipcRenderer.sendSync('get-username-hostname')['username']
+    }`
     const newTab = {
       name: 'Tab #1',
-      path: `/home/${
-        window.electron.ipcRenderer.sendSync('get-username-hostname')[
-          'username'
-        ]
-      }`,
+      path: homePath,
       command: '',
       output: '',
       wave: {

@@ -31,7 +31,7 @@ if (isProd) {
     await mainWindow.loadURL('app://./home.html')
   } else {
     await mainWindow.loadURL(`http://localhost:${process.argv[2]}/home`)
-    mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
   }
 
   mainWindow.on('ready-to-show', async () => {

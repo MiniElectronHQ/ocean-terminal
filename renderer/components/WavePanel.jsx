@@ -2,7 +2,7 @@ import { MdMicrowave } from 'react-icons/md'
 import FolderViewer from './FolderViewer'
 import PackageJSON from './PackageJSON'
 
-const WavePanel = ({ tab, openFolder, packageJSON, children }) => {
+const WavePanel = ({ tab, openFolder, folderUp, children }) => {
   return (
     <div id="infoPanel">
       {/* <h1
@@ -18,6 +18,9 @@ const WavePanel = ({ tab, openFolder, packageJSON, children }) => {
           tab={tab}
           openFolder={(item) => {
             openFolder(item)
+          }}
+          folderUp={(item) => {
+            folderUp(item)
           }}
         />
       </div>

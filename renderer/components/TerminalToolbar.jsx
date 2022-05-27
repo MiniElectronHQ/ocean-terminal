@@ -1,7 +1,7 @@
 import { BsArrowUpSquare } from 'react-icons/bs'
 import { AiOutlineClear } from 'react-icons/ai'
 
-const TerminalToolbar = ({ command, folderUp, cleanup }) => {
+const TerminalToolbar = ({ command, cleanup }) => {
   return (
     <div
       id="terminalReminder"
@@ -12,15 +12,6 @@ const TerminalToolbar = ({ command, folderUp, cleanup }) => {
         <span className="text-dracula-gray mr-1">Just ran:</span> $ {command}{' '}
       </strong>
       <div className="flex space-x-2">
-        <button
-          type="button"
-          onClick={() => {
-            folderUp()
-          }}
-          className="py-1 px-2 bg-dracula-gray text-xs font-bold text-gray-200 rounded flex space-x-4 items-center"
-        >
-          <BsArrowUpSquare />
-        </button>
         <button
           type="button"
           onClick={() => {

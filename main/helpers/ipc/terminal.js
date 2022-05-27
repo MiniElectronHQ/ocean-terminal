@@ -9,7 +9,7 @@ const ipcTerminal = (store, ipcMain) => {
   })
 
   ipcMain.on('exec-command', async (event, args) => {
-    const result = await exec(args.command, args.cwd)
+    const result = await exec(args.command, args.cwd, store)
     event.returnValue = result
   })
 

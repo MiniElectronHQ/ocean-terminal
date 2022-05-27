@@ -12,7 +12,7 @@ import {
 } from 'react-icons/si'
 import { VscMarkdown } from 'react-icons/vsc'
 
-const FolderViewer = ({ tab, openFolder }) => {
+const FolderViewer = ({ tab, openFolder, folderUp }) => {
   const fileIcon = (extension) => {
     const className = 'flex-none text-base mr-2'
     switch (extension) {
@@ -57,13 +57,27 @@ const FolderViewer = ({ tab, openFolder }) => {
     <div>
       {tab?.wave && (
         <div className="w-full">
-          <div className="grid grid-cols-1">
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                folderUp()
+              }}
+              className="p-1 hover-bg-dracula-semidark text-xs font-bold text-gray-200 rounded flex items-center w-full"
+            >
+              <MdFolderOpen
+                className="flex-none text-base mr-2"
+                style={{ color: '#42a5f5' }}
+              />{' '}
+              <span>../</span>
+            </button>
+
             {tab.wave.folders.map((item) => {
               return (
                 item !== '' && (
                   <div
                     key={item}
-                    className="flex items-center justify-left p-1 text-xs text-gray-300 hover:text-white hover-bg-dracula-semidark rounded text-center cursor-pointer"
+                    className="flex items-center justify-left p-1 text-xs text-gray-300 hover:text-white hover-bg-dracula-semidark rounded cursor-pointer"
                     onClick={() => {
                       openFolder(item)
                     }}
@@ -85,10 +99,10 @@ const FolderViewer = ({ tab, openFolder }) => {
                 item !== '' && (
                   <div
                     key={item}
-                    className="flex items-center justify-left p-1 text-xs text-gray-300 hover:text-white hover-bg-dracula-semidark rounded text-center cursor-pointer"
-                    onClick={() => {
-                      openFolder(item)
-                    }}
+                    className="flex items-center justify-left p-1 text-xs text-gray-300 rounded"
+                    // onClick={() => {
+                    //   openFolder(item)
+                    // }}
                   >
                     {fileIcon(item.split('.').pop())}
                     <span className="font-medium truncate">
