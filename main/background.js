@@ -15,8 +15,8 @@ const isProd = process.env.NODE_ENV === 'production'
 const os = require('os')
 const pty = require('node-pty')
 const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
-const ptyProcess = pty.spawn(shell, [], {
-  name: 'xterm-color',
+const ptyProcess = pty.spawn(shell, ['--noprofile', '--norc'], {
+  name: 'xterm-256color',
   cols: 80,
   rows: 30,
   cwd: process.env.HOME,
@@ -38,6 +38,7 @@ let mainWindow
   mainWindow = createWindow('main', {
     width: 1324,
     height: 928,
+    transparent: true,
     frame: false,
   })
 

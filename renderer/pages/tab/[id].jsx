@@ -43,21 +43,23 @@ function Tab() {
     let testTerm = xtermRef.current.terminal
     let testFitAddon = fitAddon
 
-    window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
-      const systemInfo = window.electron.ipcRenderer.sendSync(
-        'get-username-hostname'
-      )
-      const sysInfo = `[${systemInfo.username}@${systemInfo.hostname}`
+    window.electron.ipcRenderer.send(
+      'terminal.keystroke',
+      `export PS1="$ "\r`,
+      `export PS1="$ "`,
+      !interactive
+    )
 
+    window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
       let output = result.data
         .replaceAll(`${result.currentCommand}\r\n`, '')
         .replace(`${result.currentCommand}`, '')
 
-      if (output.includes(sysInfo) && result.currentInteractive) {
-        output = output.split(sysInfo)[0]
+      if (output.includes(`$`) && result.currentInteractive) {
+        output = output.replace(`$`, '')
       }
 
-      testTerm.write(output)
+      testTerm.writeUtf8(output)
       testFitAddon.fit()
 
       const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
@@ -155,10 +157,11 @@ function Tab() {
 
   const setInteractiveMode = () => {
     setInteractive(!interactive)
+    xtermRef.current.terminal.focus()
   }
 
   return (
-    <div className="p-4 pt-3">
+    <div className="p-4 pt-3" id="body">
       <Toolbar />
       <TabNav
         tabs={tabs}
@@ -177,30 +180,30 @@ function Tab() {
         }}
       />
       <CommandLine
+        className={classNames('', {
+          'interactive-mode': interactive,
+        })}
         path={path}
         submitCommand={(event) => {
           submitCommand(event)
         }}
       />
-      <div
-        id="terminalWrapper"
-        className={classNames('relative', {
-          'interactive-mode': interactive,
-        })}
-      >
-        {command && (
-          <TerminalToolbar
-            command={command}
-            interactive={interactive}
-            cleanup={() => {
-              cleanup()
-            }}
-            setInteractiveMode={() => {
-              setInteractiveMode()
-            }}
-          />
-        )}
-        <div className="terminalWrapper">
+      <div id="terminalWrapper" className="relative">
+        <TerminalToolbar
+          command={command}
+          interactive={interactive}
+          cleanup={() => {
+            cleanup()
+          }}
+          setInteractiveMode={() => {
+            setInteractiveMode()
+          }}
+        />
+        <div
+          className={classNames('terminalWrapper', {
+            'interactive-mode': interactive,
+          })}
+        >
           <XTerm
             className="terminal"
             ref={xtermRef}

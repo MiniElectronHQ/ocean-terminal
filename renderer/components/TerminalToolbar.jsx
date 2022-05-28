@@ -15,7 +15,12 @@ const TerminalToolbar = ({
       style={{ zIndex: 999999 }}
     >
       <strong>
-        <span className="text-dracula-gray mr-1">Just ran:</span> $ {command}{' '}
+        {command && (
+          <span>
+            <span className="text-dracula-gray mr-1">Just ran:</span> ${' '}
+            {command}
+          </span>
+        )}
       </strong>
       <div className="flex space-x-2">
         <button

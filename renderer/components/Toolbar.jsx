@@ -15,15 +15,15 @@ const Toolbar = ({}) => {
 
   return (
     <div id="toolbar">
-      <div className="flex items-center justify-between px-2">
-        <div className="font-bold">
+      <div className="flex items-center justify-between px-4">
+        <div className="font-bold text-sm">
           <span className="text-dracula-cyan">
             {username}
             <span className="text-dracula-gray">@</span>
             {hostname}
           </span>
         </div>
-        <div className="can-drag p-2 flex-1 text-center font-bold">
+        <div className="can-drag p-2.5 flex-1 text-center font-bold text-sm">
           ocean
           <span className="text-dracula-cyan">~</span>terminal
         </div>

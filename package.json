@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
+    "colors": "^1.4.0",
     "electron-rebuild": "^3.2.7",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.1",

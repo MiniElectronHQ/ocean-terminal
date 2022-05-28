@@ -13,6 +13,11 @@ const ipcTerminal = (store, ipcMain) => {
     event.returnValue = result
   })
 
+  ipcMain.on('get-bash-version', async (event, args) => {
+    const result = await exec('echo "$BASH_VERSION"', process.env.HOME, store)
+    event.returnValue = result
+  })
+
   ipcMain.on('exec-command-reply', async (event, args) => {
     const pids = store.get('pids')
     const pid = pids.find((pid) => pid.id === args.id).pid

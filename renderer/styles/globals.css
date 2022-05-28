@@ -68,17 +68,22 @@ a {
   cursor: default;
 }
 
+html {
+  background: none;
+}
+
 body {
   font-family: InterRegular, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Inter', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #282a36;
+  background: none;
   color: #f8f8f2;
   padding-top: 79px;
   padding-right: 200px;
   overflow: hidden;
+  border-radius: 14px;
 }
 
 .hover-bg-dracula-semidark:hover {
@@ -130,6 +135,10 @@ body {
   display: block !important;
 }
 
+.interactive-mode.command-line {
+  display: none !important;
+}
+
 #home {
   background: url('/images/home.jpg') no-repeat;
 
@@ -152,12 +161,14 @@ body {
 
 #toolbar {
   background: #1e1f29;
-  border-bottom: 1px solid #1e1f29;
+  border-bottom: 1px solid #1e1f2a;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 99999999;
   width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 #infoPanel-headline {
@@ -166,7 +177,7 @@ body {
 
 #tablist {
   background: #1e1f29;
-  /* border-top: 1px solid #14151a; */
+  border-top: 1px solid #14151a;
   border-bottom: 1px solid #30333f;
   position: fixed;
   top: 41px;
@@ -201,16 +212,22 @@ body {
   z-index: 99999;
   color: #fff;
   overflow-x: hidden;
+  border-bottom-right-radius: 10px;
 }
 
 .terminal {
   width: 100%;
   height: calc(100vh - 195px);
-
   color: #f8f8f2;
   font-size: 14px;
   line-height: 17px;
   white-space: pre;
+}
+
+#body {
+  background: #16171ff1;
+  height: calc(100vh - 78px);
+  border-bottom-left-radius: 10px;
 }
 
 .terminalWrapper {
@@ -229,6 +246,14 @@ body {
   padding-bottom: 40px;
   border: none;
   /* overflow: hidden; */
+}
+
+.terminalWrapper.interactive-mode {
+  height: calc(100vh - 135px) !important;
+}
+
+.terminalWrapper.interactive-mode .terminal {
+  height: calc(100vh - 165px) !important;
 }
 
 #terminalReminder {

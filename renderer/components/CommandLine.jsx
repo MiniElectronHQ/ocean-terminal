@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MdFolderOpen } from 'react-icons/md'
 import { FaDollarSign } from 'react-icons/fa'
 
-const CommandLine = ({ path, submitCommand }) => {
+const CommandLine = ({ path, submitCommand, className }) => {
   const [inputValue, setInputValue] = useState('')
 
   return (
@@ -13,13 +13,13 @@ const CommandLine = ({ path, submitCommand }) => {
           ~{path}
         </span>
       </h3>
-      <div className="flex items-center font-bold">
+      <div className={`${className} command-line flex items-center font-bold`}>
         <FaDollarSign className="text-dracula-cyan text-sm mr-1" />
         <input
           autoFocus={true}
           placeholder="Type a command..."
           className="w-full bg-gray-900 text-white p-1 font-bold border-transparent"
-          style={{ backgroundColor: '#282a36' }}
+          style={{ backgroundColor: 'rgba(0,0,0,0)' }}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {
               if (event.target.value.trim() !== '') {
