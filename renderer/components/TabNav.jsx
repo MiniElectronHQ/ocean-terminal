@@ -74,7 +74,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
             return (
               <div key={index} className="inline-block relative">
                 <span
-                  className="tab tab-active cursor-pointer"
+                  className="tab tab-active"
                   onClick={() => {
                     setVisible(!visible)
                   }}
@@ -100,6 +100,7 @@ const TabNav = ({ tabs, setTabs, tab }) => {
                         onClick={() => {
                           deleteTab()
                         }}
+                        className="text-xs px-2 py-1 bg-darker-900 text-darker-200 font-medium rounded mt-1"
                       >
                         Delete
                       </button>

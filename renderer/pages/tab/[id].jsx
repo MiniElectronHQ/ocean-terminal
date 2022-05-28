@@ -17,7 +17,7 @@ function Tab() {
   const [tab, setTab] = useState({})
   const [command, setCommand] = useState('')
   const [path, setPath] = useState('')
-  const [interactive, setInteractive] = useState('')
+  const [interactive, setInteractive] = useState(false)
 
   const xtermRef = useRef(null)
   const fitAddon = new FitAddon()
@@ -31,23 +31,32 @@ function Tab() {
     setPath(visiblePath(currentTab.path))
     xtermRef.current.terminal.writeUtf8('\x1bc')
     xtermRef.current.terminal.writeUtf8(currentTab.output)
+    window.electron.ipcRenderer.send(
+      'terminal.keystroke',
+      `cd ${currentTab.path}\r`,
+      `cd ${currentTab.path}`,
+      !interactive
+    )
   }, [id])
 
   useEffect(() => {
     let testTerm = xtermRef.current.terminal
     let testFitAddon = fitAddon
 
-    xtermRef.current.terminal.focus()
-
     window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
       const systemInfo = window.electron.ipcRenderer.sendSync(
         'get-username-hostname'
       )
       const sysInfo = `[${systemInfo.username}@${systemInfo.hostname}`
-      let output = result.data.replaceAll(`${result.currentCommand}\r\n`, '')
-      if (output.includes(sysInfo)) {
+
+      let output = result.data
+        .replaceAll(`${result.currentCommand}\r\n`, '')
+        .replace(`${result.currentCommand}`, '')
+
+      if (output.includes(sysInfo) && result.currentInteractive) {
         output = output.split(sysInfo)[0]
       }
+
       testTerm.write(output)
       testFitAddon.fit()
 
@@ -76,7 +85,8 @@ function Tab() {
     window.electron.ipcRenderer.send(
       'terminal.keystroke',
       `${command}\r`,
-      command
+      command,
+      !interactive
     )
     xtermRef.current.terminal.writeUtf8('\x1bc')
     event.target.value = ''
@@ -91,7 +101,8 @@ function Tab() {
     window.electron.ipcRenderer.send(
       'terminal.keystroke',
       `${command}\r`,
-      command
+      command,
+      !interactive
     )
     window.electron.ipcRenderer.send('exec-command', {
       command: command,
@@ -132,7 +143,8 @@ function Tab() {
     window.electron.ipcRenderer.send(
       'terminal.keystroke',
       `${command}\r`,
-      command
+      command,
+      !interactive
     )
     window.electron.ipcRenderer.send('exec-command', {
       command: `cd ${item}`,

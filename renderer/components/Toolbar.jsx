@@ -29,21 +29,20 @@ const Toolbar = ({}) => {
         </div>
         <div className="flex items-center">
           <Link href="/home">
-            <div className="hover:bg-darker-900 p-1 px-1.5 rounded">
+            <div className="hover:bg-darker-900 p-1 px-1.5 mr-3 rounded">
               <HiOutlineHome className="text-dracula-gray" />
             </div>
           </Link>
-          <Link href="/settings">
+          {/* <Link href="/settings">
             <div className="hover:bg-darker-900 p-1 px-1.5 mr-3 rounded">
               <HiOutlineCog className="text-dracula-gray" />
             </div>
-          </Link>
+          </Link> */}
           <button
             type="button"
             onClick={() => {
               window.electron.ipcRenderer.sendSync('close-app')
             }}
-            className="cursor-pointer"
             style={{
               color: '#e2595d',
               zIndex: '9999999',

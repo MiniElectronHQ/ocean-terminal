@@ -23,6 +23,7 @@ const ptyProcess = pty.spawn(shell, [], {
   env: process.env,
 })
 let currentCommand = ''
+let currentInteractive = false
 
 if (isProd) {
   serve({ directory: 'app' })
@@ -60,12 +61,14 @@ ptyProcess.on('data', function (data) {
   mainWindow.webContents.send('reply-spawn-pipe', {
     data: data,
     currentCommand: currentCommand,
+    currentInteractive: currentInteractive,
   })
 })
 
-ipcMain.on('terminal.keystroke', (event, key, command) => {
+ipcMain.on('terminal.keystroke', (event, key, command, interactive) => {
   ptyProcess.write(key)
   currentCommand = command
+  currentInteractive = interactive
 })
 
 defaultData(store)
