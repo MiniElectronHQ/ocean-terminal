@@ -40,42 +40,24 @@ function Tab() {
     xtermRef.current.terminal.focus()
 
     window.electron.ipcRenderer.on('reply-spawn-pipe', (event, result) => {
-      if (result !== '\u001b[H\u001b[2J\u001b[3J') {
-        testTerm.writeUtf8(`${result}\n`)
-      } else {
-        testTerm.writeUtf8(result)
+      const systemInfo = window.electron.ipcRenderer.sendSync(
+        'get-username-hostname'
+      )
+      const sysInfo = `[${systemInfo.username}@${systemInfo.hostname}`
+      let output = result.data.replaceAll(`${result.currentCommand}\r\n`, '')
+      if (output.includes(sysInfo)) {
+        output = output.split(sysInfo)[0]
       }
+      testTerm.write(output)
       testFitAddon.fit()
 
       const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
       const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
-      currentTab.output = result
+      currentTab.output = output
       window.electron.ipcRenderer.send('edit-tab', {
         id,
         tab: currentTab,
       })
-    })
-
-    xtermRef.current.terminal.onKey((e) => {
-      xtermRef.current.terminal.write(e.key)
-      if (e.key == '\r') {
-        // TODO: on enter: send command to backend to response
-        // window.electron.ipcRenderer.send('response-to-child-process', {
-        //   id: id,
-        //   command: '3000',
-        // })
-
-        const result = window.electron.ipcRenderer.send('exec-command-reply', {
-          command: '3000',
-          id: id,
-          cwd: tab.path,
-        })
-        console.log(result)
-        xtermRef.current.terminal.write('\n send response to backend')
-      } else if (e.key == '\x7F') {
-        // TODO: make act like real backspace
-        xtermRef.current.terminal.write('\x1b[D')
-      }
     })
   }, [])
 
@@ -87,14 +69,15 @@ function Tab() {
 
     window.electron.ipcRenderer.send('cleanup', id)
 
-    window.electron.ipcRenderer.send('spawn-command', {
-      command: command,
-      cwd: tab.path,
-      id: id,
-    })
     if (command.split(' ')[0] === 'cd') {
       updatePath()
     }
+
+    window.electron.ipcRenderer.send(
+      'terminal.keystroke',
+      `${command}\r`,
+      command
+    )
     xtermRef.current.terminal.writeUtf8('\x1bc')
     event.target.value = ''
     setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
@@ -103,8 +86,15 @@ function Tab() {
   const folderUp = () => {
     setCommand('cd ../')
     xtermRef.current.terminal.writeUtf8('\x1bc')
+
+    const command = 'cd ../'
+    window.electron.ipcRenderer.send(
+      'terminal.keystroke',
+      `${command}\r`,
+      command
+    )
     window.electron.ipcRenderer.send('exec-command', {
-      command: 'cd ../',
+      command: command,
       cwd: tab.path,
     })
     updatePath()
@@ -138,6 +128,12 @@ function Tab() {
   const openFolder = (item) => {
     setCommand(`cd "${item.replace('/', '')}"`)
     xtermRef.current.terminal.writeUtf8('\x1bc')
+    const command = `cd "${item.replace('/', '')}"`
+    window.electron.ipcRenderer.send(
+      'terminal.keystroke',
+      `${command}\r`,
+      command
+    )
     window.electron.ipcRenderer.send('exec-command', {
       command: `cd ${item}`,
       cwd: tab.path,
@@ -192,20 +188,25 @@ function Tab() {
             }}
           />
         )}
-        <XTerm
-          className="terminal"
-          ref={xtermRef}
-          options={{
-            convertEol: true,
-            theme: {
-              background: '#1e1f29',
-            },
-            fontFamily: 'FiraCode, monospace',
-            fontSize: 12,
-            fontWeight: 700,
-          }}
-          addons={[fitAddon]}
-        />
+        <div className="terminalWrapper">
+          <XTerm
+            className="terminal"
+            ref={xtermRef}
+            options={{
+              convertEol: true,
+              theme: {
+                background: '#1e1f29',
+              },
+              fontFamily: 'FiraCode, monospace',
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+            addons={[fitAddon]}
+            onData={(e) => {
+              window.electron.ipcRenderer.send('terminal.keystroke', e)
+            }}
+          />
+        </div>
       </div>
     </div>
   )

@@ -78,6 +78,7 @@ body {
   color: #f8f8f2;
   padding-top: 79px;
   padding-right: 200px;
+  overflow: hidden;
 }
 
 .hover-bg-dracula-semidark:hover {
@@ -204,18 +205,22 @@ body {
 
 .terminal {
   width: 100%;
-  height: calc(100vh - 175px);
+  height: calc(100vh - 195px);
 
+  color: #f8f8f2;
+  font-size: 14px;
+  line-height: 17px;
+  white-space: pre;
+}
+
+.terminalWrapper {
+  height: calc(100vh - 175px);
+  padding: 20px;
+  padding-top: 55px;
   border: 1px solid #30333f;
   background: #1e1f29;
   border-radius: 7px;
   border-top-left-radius: 0;
-  color: #f8f8f2;
-  padding: 20px;
-  font-size: 14px;
-  line-height: 17px;
-  white-space: pre;
-  padding-top: 55px;
 }
 
 .terminal.xterm {
@@ -223,7 +228,7 @@ body {
   padding: 0;
   padding-bottom: 40px;
   border: none;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 #terminalReminder {

@@ -17,8 +17,10 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
+    "electron-rebuild": "^3.2.7",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.1",
+    "node-pty": "^0.10.1",
     "react-icons": "^4.3.1",
     "xterm-addon-fit": "^0.5.0"
   },

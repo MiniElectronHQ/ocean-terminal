@@ -20,15 +20,11 @@ const spawnCommand = async (event, command, cwd, store, id) => {
     const child_processes = store.get('child_processes')
 
     if (child_processes[id] !== undefined) {
-      console.log('found child', child_processes[id])
       child = child_processes[id]
     } else {
-      console.log('not found child', child)
       child_processes.push(child)
       store.set('child_processes', child_processes)
     }
-
-    console.log(child.pid)
 
     store.set('pids', [...store.get('pids'), { id: id, pid: child.pid }])
 
