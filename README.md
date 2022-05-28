@@ -1,11 +1,6 @@
 # 🌊 Ocean::Terminal
 
-A highly opinionated take on a terminal emulator. Made in ElectronJS.
-
-Mostly just a prototype to introduce a few concepts that I think are pretty useful, such as:
-
-- File browser
-- Command line output window
+Just another highly opinionated terminal emulator. Made in ElectronJS.
 
 > Note: Work in progress. v0.0.1
 
