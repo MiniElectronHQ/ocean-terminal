@@ -29,8 +29,8 @@ function Tab() {
     setTab(currentTab)
     setCommand(currentTab.command)
     setPath(visiblePath(currentTab.path))
-    xtermRef.current.terminal.writeUtf8('\x1bc')
-    xtermRef.current.terminal.writeUtf8(currentTab.output)
+    xtermRef.current.terminal.write('\x1bc')
+    xtermRef.current.terminal.write(currentTab.output)
     window.electron.ipcRenderer.send(
       'terminal.keystroke',
       `cd ${currentTab.path}\r`,
@@ -59,7 +59,7 @@ function Tab() {
         output = output.replace(`$`, '')
       }
 
-      testTerm.writeUtf8(output)
+      testTerm.write(output)
       testFitAddon.fit()
 
       const id = window.electron.ipcRenderer.sendSync('get-current-tab-id')
@@ -90,14 +90,14 @@ function Tab() {
       command,
       !interactive
     )
-    xtermRef.current.terminal.writeUtf8('\x1bc')
+    xtermRef.current.terminal.write('\x1bc')
     event.target.value = ''
     setTabs(window.electron.ipcRenderer.sendSync('edit-tab', { id, tab }))
   }
 
   const folderUp = () => {
     setCommand('cd ../')
-    xtermRef.current.terminal.writeUtf8('\x1bc')
+    xtermRef.current.terminal.write('\x1bc')
 
     const command = 'cd ../'
     window.electron.ipcRenderer.send(
@@ -115,7 +115,7 @@ function Tab() {
 
   const cleanup = () => {
     setCommand('')
-    xtermRef.current.terminal.writeUtf8('\x1bc')
+    xtermRef.current.terminal.write('\x1bc')
     window.electron.ipcRenderer.send('cleanup', id)
   }
 
@@ -124,6 +124,7 @@ function Tab() {
       const currentTab = window.electron.ipcRenderer.sendSync('get-tab', id)
       setTab(currentTab)
       setPath(visiblePath(currentTab.path))
+      console.log('update path', currentTab)
     }, 50)
   }
 
@@ -140,7 +141,7 @@ function Tab() {
 
   const openFolder = (item) => {
     setCommand(`cd "${item.replace('/', '')}"`)
-    xtermRef.current.terminal.writeUtf8('\x1bc')
+    xtermRef.current.terminal.write('\x1bc')
     const command = `cd "${item.replace('/', '')}"`
     window.electron.ipcRenderer.send(
       'terminal.keystroke',

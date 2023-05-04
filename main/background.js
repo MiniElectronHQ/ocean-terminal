@@ -9,6 +9,8 @@ import {
   ipcTerminal,
 } from './helpers'
 
+console.log('Staring background process')
+
 const store = new Store()
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -24,6 +26,9 @@ const ptyProcess = pty.spawn(shell, ['--noprofile', '--norc'], {
 })
 let currentCommand = ''
 let currentInteractive = false
+
+console.log('NODE_ENV: ', process.env.NODE_ENV)
+console.log('shell: ', shell)
 
 if (isProd) {
   serve({ directory: 'app' })
@@ -45,7 +50,8 @@ let mainWindow
   if (isProd) {
     await mainWindow.loadURL('app://./home.html')
   } else {
-    await mainWindow.loadURL(`http://localhost:${process.argv[2]}/home`)
+    const port = process.argv[2]
+    await mainWindow.loadURL(`http://localhost:${port}/home`)
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   }
 
@@ -59,11 +65,13 @@ app.on('window-all-closed', () => {
 })
 
 ptyProcess.on('data', function (data) {
-  mainWindow.webContents.send('reply-spawn-pipe', {
-    data: data,
-    currentCommand: currentCommand,
-    currentInteractive: currentInteractive,
-  })
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.send('reply-spawn-pipe', {
+      data: data,
+      currentCommand: currentCommand,
+      currentInteractive: currentInteractive,
+    })
+  }
 })
 
 ipcMain.on('terminal.keystroke', (event, key, command, interactive) => {
