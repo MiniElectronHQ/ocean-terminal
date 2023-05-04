@@ -27,9 +27,6 @@ const ptyProcess = pty.spawn(shell, ['--noprofile', '--norc'], {
 let currentCommand = ''
 let currentInteractive = false
 
-console.log('NODE_ENV: ', process.env.NODE_ENV)
-console.log('shell: ', shell)
-
 if (isProd) {
   serve({ directory: 'app' })
 } else {
